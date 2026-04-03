@@ -10,6 +10,7 @@ const loginError = document.getElementById('loginError');
 if (sessionStorage.getItem('smart_logged_in') === 'true') {
     if(loginScreen) loginScreen.style.display = 'none';
     if(appContainer) appContainer.style.display = 'block';
+    document.body.style.background = "url('bg_image.jpg?v=3') center/cover fixed";
     document.body.classList.add('logged-in-bg');
 }
 
@@ -20,6 +21,7 @@ if (loginForm) {
             sessionStorage.setItem('smart_logged_in', 'true');
             loginScreen.style.display = 'none';
             appContainer.style.display = 'block';
+            document.body.style.background = "url('bg_image.jpg?v=3') center/cover fixed";
             document.body.classList.add('logged-in-bg');
         } else {
             loginError.style.display = 'block';
