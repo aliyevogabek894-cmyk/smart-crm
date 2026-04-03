@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart O'quvchi Nazorat Tizimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card glass-panel">
+            <img src="avatar.png" alt="Ustoz Avatar" class="login-avatar">
+            <h2>Hush kelibsiz!</h2>
+            <p style="margin-bottom: 1rem;">Tizimga kirish uchun parolni kiriting</p>
+            <form id="loginForm">
+                <input type="password" id="passwordInput" placeholder="Suxfiy parol..." required style="text-align: center;">
+                <div id="loginError" style="color: var(--danger); font-size: 0.9rem; margin-top: 0.5rem; display: none;">Parol tasdiqlanmadi! Qayta urinib ko'ring.</div>
+                <button type="submit" class="primary-btn" style="width: 100%; margin-top: 1rem;">Davom etish 👉</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Header -->
+        <header>
+            <h1>🎓 Smart Nazorat</h1>
+            <p>O'qituvchining aqlli yordamchisi</p>
+            <div style="margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.8rem;">
+                <button class="primary-btn" style="width: 250px; padding: 0.8rem; background: var(--text-main); font-size: 1rem;" onclick="openHistoryModal()">🕰 Umumiy Tarix</button>
+                <div style="display: flex; gap: 0.5rem; width: 250px;">
+                    <select id="mainClassFilter" style="flex: 1; padding: 0.8rem; border-radius: 8px; border: 2px solid var(--primary); font-size: 1rem; font-weight: bold; color: var(--primary); background: rgba(255,255,255,0.8); cursor: pointer; text-align: center;" onchange="setClassFilter(this.value)">
+                        <!-- Options injected via JS -->
+                    </select>
+                    <button class="primary-btn" style="padding: 0 1rem; background: var(--text-muted);" onclick="openClassManager()" title="Sinflarni sozlash">⚙️</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Panel -->
+        <section class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-icon">📞</div>
+                <div class="stat-info">
+                    <span class="stat-title">Bugun qo'ng'iroqlar</span>
+                    <h2 id="todayCallCount">0</h2>
+                </div>
+            </div>
+            <div class="stat-card stat-alert">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-info">
+                    <span class="stat-title">Eng e'tiborsiz o'quvchi</span>
+                    <h2 id="mostIgnoredStudent">-</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Telegram Action Button -->
+        <button class="primary-btn" style="background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%); width: 100%; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3); font-weight: bold; font-size: 1.1rem;" onclick="sendTelegramReport()">
+            📲 Hamma eslatmalarni Telegram (@aliliyev_2225) ga jo'natish
+        </button>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Drafts Section -->
+            <section class="draft-section glass-panel" style="border: 2px solid var(--danger); background: var(--danger-light); padding-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                    <h2 style="color: var(--danger); margin: 0; font-size: 1.2rem;">📝 Dars Qoralamasi (Tezkor kiritish)</h2>
+                </div>
+                <p style="color: var(--danger); font-size: 0.9rem; margin-bottom: 0.8rem;">Darsda diqqatsizlik qilgan yoki muammo chiqargan o'quvchi ismini tering.</p>
+                <div style="position: relative;">
+                    <input type="text" id="draftInput" placeholder="Ismni klaviatura orqali qidiring..." style="border-color: var(--danger); border-width: 2px; background: white;">
+                    <div id="draftSuggest" style="position: absolute; top: 100%; left: 0; width: 100%; background: white; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 8px; display: none; max-height: 200px; overflow-y: auto;">
+                        <!-- suggestions injected -->
+                    </div>
+                </div>
+                <div id="urgentBadges" style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem;">
+                    <!-- urgent badges injected -->
+                </div>
+            </section>
+
+            <!-- Add Student Form -->
+            <section class="form-section glass-panel">
+                <h2>Yangi o'quvchi qo'shish</h2>
+                <form id="addStudentForm">
+                    <div class="input-group">
+                        <input type="text" id="firstName" placeholder="Ism" required>
+                        <input type="text" id="lastName" placeholder="Familiya" required>
+                    </div>
+                    <select id="classGroup" required>
+                        <!-- Options injected by JS -->
+                    </select>
+                    <input type="text" id="newClassInput" placeholder="Yangi sinf nomini kiriting (masalan: 11-A)" style="display: none;">
+                    <input type="tel" id="parentPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
+                    <textarea id="notes" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
+                    <button type="submit" class="primary-btn">Qo'shish</button>
+                </form>
+            </section>
+
+            <!-- Search and List -->
+            <section class="list-section glass-panel">
+                <div class="list-header" style="flex-direction: column; align-items: stretch; gap: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 1rem;">
+                        <h2 style="margin: 0;">O'quvchilar ro'yxati</h2>
+                        <input type="text" id="searchInput" placeholder="🔍 Ism bo'yicha qidiruv...">
+                    </div>
+                </div>
+                
+                <div class="student-list" id="studentList">
+                    <!-- Students will be injected here via JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeHistoryModal()">&times;</span>
+            <h2>🕰 Qo'ng'iroqlar Tarixi</h2>
+            <div id="historyList" class="history-list">
+                <!-- History items injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Manage Modal -->
+    <div id="classManageModal" class="modal">
+        <div class="modal-content glass-panel" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeClassManager()">&times;</span>
+            <h2 style="font-size: 1.3rem;">⚙️ Sinflarni tahrirlash</h2>
+            <div id="classListContainer" class="history-list">
+                <!-- Classes injected here -->
+            </div>
+        </div>
+    </div>
+    <!-- Edit Student Modal -->
+    <div id="editStudentModal" class="modal">
+        <div class="modal-content glass-panel" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeEditStudentModal()">&times;</span>
+            <h2 style="font-size: 1.3rem; margin-bottom: 0;">✏️ O'quvchini tahrirlash</h2>
+            <form id="editStudentForm" style="margin-top: 1rem;">
+                <input type="hidden" id="editStudentId">
+                <div class="input-group">
+                    <input type="text" id="editFirstName" placeholder="Ism" required>
+                    <input type="text" id="editLastName" placeholder="Familiya" required>
+                </div>
+                <input type="tel" id="editPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
+                <textarea id="editNotes" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
+                <button type="submit" class="primary-btn">Saqlash</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
