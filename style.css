@@ -33,7 +33,8 @@ body {
 
 /* Background applied only after login */
 body.logged-in-bg {
-    background: url('bg2.jpg') center/cover fixed !important;
+    background: #1e293b url('bg2.jpg') no-repeat center top fixed !important;
+    background-size: contain !important;
 }
 
 body.logged-in-bg::before {
