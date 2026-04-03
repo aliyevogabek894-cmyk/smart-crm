@@ -10,8 +10,10 @@ const loginError = document.getElementById('loginError');
 if (sessionStorage.getItem('smart_logged_in') === 'true') {
     if(loginScreen) loginScreen.style.display = 'none';
     if(appContainer) appContainer.style.display = 'block';
-    document.body.style.background = "#1e293b url('bg2.jpg?v=5') no-repeat center top fixed";
-    document.body.style.backgroundSize = "contain";
+    document.body.style.background = "url('bg2.jpg?v=6') center top / contain no-repeat fixed, " +
+                                     "url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') left 2% center / 18% no-repeat fixed, " +
+                                     "url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') right 2% center / 18% no-repeat fixed, " +
+                                     "linear-gradient(135deg, #0f172a 0%, #1e293b 100%) fixed";
     document.body.classList.add('logged-in-bg');
 }
 
@@ -22,8 +24,10 @@ if (loginForm) {
             sessionStorage.setItem('smart_logged_in', 'true');
             loginScreen.style.display = 'none';
             appContainer.style.display = 'block';
-            document.body.style.background = "#1e293b url('bg2.jpg?v=5') no-repeat center top fixed";
-            document.body.style.backgroundSize = "contain";
+            document.body.style.background = "url('bg2.jpg?v=6') center top / contain no-repeat fixed, " +
+                                             "url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') left 2% center / 18% no-repeat fixed, " +
+                                             "url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') right 2% center / 18% no-repeat fixed, " +
+                                             "linear-gradient(135deg, #0f172a 0%, #1e293b 100%) fixed";
             document.body.classList.add('logged-in-bg');
         } else {
             loginError.style.display = 'block';
