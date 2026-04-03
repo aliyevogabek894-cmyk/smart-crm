@@ -26,26 +26,57 @@
 }
 
 body {
-    background: var(--bg-gradient);
+    background: #0f172a; /* Deep elegant dark slate */
     min-height: 100vh;
     color: var(--text-main);
+    overflow-x: hidden;
+    position: relative;
+    z-index: 0;
 }
 
-/* Background applied only after login */
-body.logged-in-bg {
-    background: 
-        url('bg2.jpg?v=6') center top / contain no-repeat fixed,
-        url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') left 2% center / 18% no-repeat fixed,
-        url('https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg') right 2% center / 18% no-repeat fixed,
-        linear-gradient(135deg, #0f172a 0%, #1e293b 100%) fixed !important;
-}
-
-body.logged-in-bg::before {
-    content: '';
+/* 3D Animated Orbs Gradient Backdrops */
+.bg-orbs {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.4); /* Creates a neat glass overlay over the entire image so UI is readable */
+    top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.7;
+    animation: float 20s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 500px; height: 500px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    top: -10%; left: -10%;
+}
+
+.orb-2 {
+    width: 400px; height: 400px;
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    bottom: -10%; right: -5%;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 600px; height: 600px;
+    background: linear-gradient(135deg, #f12711, #f5af19);
+    top: 50%; left: 40%;
+    transform: translate(-50%, -50%);
+    animation-delay: -12s;
+    filter: blur(120px);
+    opacity: 0.4;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 80px) scale(1.1); }
+    100% { transform: translate(-30px, -50px) scale(0.9); }
 }
 
 .app-container {
@@ -111,16 +142,18 @@ header p {
     color: var(--text-main);
 }
 
-/* Glassmorphism Panel Base */
+/* Glassmorphism Panel Base (3D Enhanced) */
 .glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    box-shadow: var(--glass-shadow);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
     padding: 1.5rem;
     margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Stats Panel */
