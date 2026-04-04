@@ -92,15 +92,23 @@ header {
 }
 
 header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
     margin-bottom: 0.5rem;
+    letter-spacing: -1px;
 }
 
 header p {
-    color: var(--text-muted);
-    font-size: 1.1rem;
+    color: #e2e8f0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
 }
 
 /* Login Screen Styles */
