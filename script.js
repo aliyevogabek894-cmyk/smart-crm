@@ -190,7 +190,12 @@ function render() {
             <div class="student-card stagger-item ${borderClass}" style="animation-delay: ${delay}s;" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
                 <div class="student-info">
                     <h3>${student.firstName} ${student.lastName}</h3>
-                    <p>📞 <a href="tel:${cleanPhone}" style="color: var(--text-main); font-weight: 600; text-decoration: none;">${student.phone}</a></p>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+                        <span>📞 ${student.phone}</span>
+                        <a href="tel:${cleanPhone}" style="background: #e0f2fe; color: #0284c7; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: bold; border: 1px solid #bae6fd; box-shadow: 0 2px 4px rgba(2, 132, 199, 0.1);">
+                            📲 Tel qilish
+                        </a>
+                    </div>
                     <p>📝 ${student.notes || "Izoh yo'q"}</p>
                     ${lastFeedbackHtml}
                     <div class="tags-container">
