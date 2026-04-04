@@ -181,6 +181,13 @@ header p {
     margin-bottom: 2rem;
     position: relative;
     overflow: hidden;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+    transform-style: preserve-3d;
+}
+
+.glass-panel:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 30px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* Stats Panel */
@@ -272,19 +279,41 @@ input:focus, textarea:focus, select:focus {
 }
 
 .primary-btn {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
     color: white;
     border: none;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s ease;
+    box-shadow: 0 6px 0 #1e3a8a, 0 15px 20px rgba(37, 99, 235, 0.4);
+    transform: translateY(0);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.primary-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: rotate(30deg) translateY(-100%);
+    transition: transform 0.5s ease;
+}
+
+.primary-btn:hover::after {
+    transform: rotate(30deg) translateY(100%);
 }
 
 .primary-btn:hover {
-    background: var(--primary-hover);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #1e40af 100%);
+}
+
+.primary-btn:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0 #1e3a8a, 0 5px 10px rgba(37, 99, 235, 0.4);
 }
 
 /* List & Search */
@@ -306,18 +335,43 @@ input:focus, textarea:focus, select:focus {
 
 .student-card {
     background: white;
-    border-radius: 12px;
-    padding: 1.2rem;
+    border-radius: 16px;
+    padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    border-left: 5px solid #ccc;
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-left: 6px solid #ccc;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    position: relative;
+    overflow: hidden;
+}
+
+.student-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
+    transform: translateX(-100%);
+    transition: 0.6s;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.student-card:hover::before {
+    transform: translateX(100%);
 }
 
 .student-card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1), 0 0 20px rgba(0, 198, 255, 0.2);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.student-card .student-info, .student-card .actions {
+    transform: translateZ(30px);
+    position: relative;
+    z-index: 2;
 }
 
 /* Status Colors */
@@ -362,18 +416,21 @@ input:focus, textarea:focus, select:focus {
 }
 
 .call-btn {
-    background: var(--success);
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
     color: white;
     border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
-    transition: transform 0.1s;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #047857, 0 8px 15px rgba(16, 185, 129, 0.3);
+    transform: translateY(0);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .call-btn:active {
-    transform: scale(0.95);
+    transform: translateY(4px);
+    box-shadow: 0 0px 0 #047857, 0 2px 5px rgba(16, 185, 129, 0.3);
 }
 
 .delete-btn {
@@ -483,4 +540,10 @@ input:focus, textarea:focus, select:focus {
 .history-item span {
     color: var(--text-muted);
     font-size: 0.85rem;
+}
+
+/* Staggered Animations */
+.stagger-item {
+    opacity: 0;
+    animation: popup3D 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }

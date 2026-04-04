@@ -163,11 +163,12 @@ function render() {
     if (filtered.length === 0) {
         studentList.innerHTML = `<p style="text-align: center; color: #64748b;">O'quvchilar topilmadi yoki hali qo'shilmagan.</p>`;
     } else {
-        studentList.innerHTML = filtered.map(student => {
+        studentList.innerHTML = filtered.map((student, index) => {
             const { borderClass, tags, problemHtml } = evaluateStudent(student);
+            const delay = 0.9 + (index * 0.1); // Staggering
             
             return `
-            <div class="student-card ${borderClass}">
+            <div class="student-card stagger-item ${borderClass}" style="animation-delay: ${delay}s;" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
                 <div class="student-info">
                     <h3>${student.firstName} ${student.lastName}</h3>
                     <p>📞 ${student.phone}</p>
@@ -186,6 +187,18 @@ function render() {
             `;
         }).join('');
     }
+
+    // Call VanillaTilt manually just in case for dynamic elements
+    setTimeout(() => {
+        if (window.VanillaTilt) {
+            window.VanillaTilt.init(document.querySelectorAll(".student-card"), {
+                max: 5,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2
+            });
+        }
+    }, 100);
 
     // Update Stats
     updateStats();

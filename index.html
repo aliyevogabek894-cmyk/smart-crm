@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart O'quvchi Nazorat Tizimi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
     <!-- 3D Graphic Elements -->
@@ -17,7 +17,7 @@
     
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
-        <div class="login-card glass-panel">
+        <div class="login-card glass-panel" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
             <img src="ustoz_rasmi.jpg" alt="Ustoz Avatar" class="login-avatar">
             <h2>Hush kelibsiz!</h2>
             <p style="margin-bottom: 1rem;">Tizimga kirish uchun parolni kiriting</p>
@@ -47,15 +47,15 @@
         </header>
 
         <!-- Stats Panel -->
-        <section class="stats-panel">
-            <div class="stat-card">
+        <section class="stats-panel stagger-item" style="animation-delay: 0.4s;">
+            <div class="stat-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3">
                 <div class="stat-icon">📞</div>
                 <div class="stat-info">
                     <span class="stat-title">Bugun qo'ng'iroqlar</span>
                     <h2 id="todayCallCount">0</h2>
                 </div>
             </div>
-            <div class="stat-card stat-alert">
+            <div class="stat-card stat-alert" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3">
                 <div class="stat-icon">⚠️</div>
                 <div class="stat-info">
                     <span class="stat-title">Eng e'tiborsiz o'quvchi</span>
@@ -65,14 +65,14 @@
         </section>
 
         <!-- Telegram Action Button -->
-        <button class="primary-btn" style="background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%); width: 100%; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3); font-weight: bold; font-size: 1.1rem;" onclick="sendTelegramReport()">
+        <button class="primary-btn stagger-item" style="background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%); width: 100%; margin-bottom: 2rem; animation-delay: 0.5s;" onclick="sendTelegramReport()">
             📲 Hamma eslatmalarni Telegram (@aliliyev_2225) ga jo'natish
         </button>
 
         <!-- Main Content -->
         <main>
             <!-- Drafts Section -->
-            <section class="draft-section glass-panel" style="border: 2px solid var(--danger); background: var(--danger-light); padding-bottom: 1.5rem;">
+            <section class="draft-section glass-panel stagger-item" style="border: 2px solid var(--danger); background: var(--danger-light); padding-bottom: 1.5rem; animation-delay: 0.6s;" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.1">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                     <h2 style="color: var(--danger); margin: 0; font-size: 1.2rem;">📝 Dars Qoralamasi (Tezkor kiritish)</h2>
                 </div>
@@ -89,7 +89,7 @@
             </section>
 
             <!-- Add Student Form -->
-            <section class="form-section glass-panel">
+            <section class="form-section glass-panel stagger-item" style="animation-delay: 0.7s;" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.1">
                 <h2>Yangi o'quvchi qo'shish</h2>
                 <form id="addStudentForm">
                     <div class="input-group">
@@ -107,7 +107,7 @@
             </section>
 
             <!-- Search and List -->
-            <section class="list-section glass-panel">
+            <section class="list-section glass-panel stagger-item" style="animation-delay: 0.8s;">
                 <div class="list-header" style="flex-direction: column; align-items: stretch; gap: 1rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 1rem;">
                         <h2 style="margin: 0;">O'quvchilar ro'yxati</h2>
@@ -123,7 +123,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="script.js?v=10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="script.js?v=11"></script>
 
     <!-- History Modal -->
     <div id="historyModal" class="modal">
