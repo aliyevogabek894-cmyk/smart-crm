@@ -666,7 +666,7 @@ function getExportData() {
 }
 
 function openTelegramAfterDownload() {
-    window.open('https://t.me/Alliyev_2225', '_blank');
+    window.open('https://t.me/alliyev_2225', '_blank');
 }
 
 window.exportToExcel = () => {
@@ -805,7 +805,7 @@ window.exportToTelegramText = () => {
     message += `\n\n🤖 Smart Nazorat tizimi orqali eslatma`;
 
     const encodedMessage = encodeURIComponent(message);
-    const telegramUrl = `https://t.me/Alliyev_2225?text=${encodedMessage}`;
+    const telegramUrl = `https://t.me/alliyev_2225?text=${encodedMessage}`;
     window.open(telegramUrl, '_blank');
     closeExportModal();
 };
