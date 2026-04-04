@@ -578,24 +578,138 @@ window.renderUrgentBadges = () => {
     }
 }
 
-// Telegram Reporter
-window.sendTelegramReport = () => {
-    let reportList = [];
+// Export Modal Logic
+window.openExportModal = () => {
+    document.getElementById('exportModal').classList.add('active');
     
-    // Sort array so urgent is top
-    let sortedStudents = [...students].sort((a,b) => {
+    // Populate select
+    const select = document.getElementById('exportClassFilter');
+    let html = `<option value="all">📁 Barcha sinflar (Umumiy hisobot)</option>`;
+    const uniqueClasses = [...classes].sort();
+    uniqueClasses.forEach(c => {
+        html += `<option value="${c}">🏫 ${c}</option>`;
+    });
+    if(select) select.innerHTML = html;
+};
+
+window.closeExportModal = () => {
+    document.getElementById('exportModal').classList.remove('active');
+};
+
+function getExportData() {
+    const filter = document.getElementById('exportClassFilter').value;
+    let targetStudents = filter === 'all' 
+        ? students 
+        : students.filter(s => (s.classGroup || 'Asosiy') === filter);
+        
+    return targetStudents.sort((a,b) => {
         if(a.isUrgent && !b.isUrgent) return -1;
         if(!a.isUrgent && b.isUrgent) return 1;
         return 0;
     });
+}
 
-    sortedStudents.forEach(s => {
+function openTelegramAfterDownload() {
+    setTimeout(() => {
+        const confirmTg = confirm("Fayl kompyuter/telefoningizga muvaffaqiyatli yuklab olindi!\n\nEndi avtomat tarzda Telegramni ochib sirdoshingizga (@aliliyev_2225) yuborishni xohlaysizmi?");
+        if(confirmTg) {
+            window.open('https://t.me/aliliyev_2225', '_blank');
+        }
+    }, 1000);
+}
+
+window.exportToExcel = () => {
+    if(typeof XLSX === 'undefined') {
+        alert("Kutubxona hozir yuklanmoqda, iltimos 2-3 soniya kuting...");
+        return;
+    }
+    const data = getExportData();
+    if(data.length === 0) { alert("Bu guruh uchun ma'lumot yo'q!"); return; }
+    
+    const excelData = data.map((s, index) => ({
+        "T/r": index + 1,
+        "Ism Familiya": s.firstName + ' ' + s.lastName,
+        "Sinf": s.classGroup || 'Asosiy',
+        "Ota-ona raqami": s.phone,
+        "Izoh / Diqqatsizlik sababi": s.isUrgent ? s.urgentReason : (s.notes || ""),
+        "Oxirgi qo'ng'iroq": s.lastCall ? formatDateUi(s.lastCall) : "Qilinmagan",
+        "Holati": s.isUrgent ? "TEZDA QO'NG'IROQ" : (s.lastCall ? "Gaplashilgan" : "Tel qilinmagan")
+    }));
+    
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Hisobot");
+    
+    const d = new Date();
+    const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.xlsx`;
+    
+    XLSX.writeFile(workbook, fileName);
+    openTelegramAfterDownload();
+    closeExportModal(); // close modal after action
+};
+
+window.exportToWord = () => {
+    const data = getExportData();
+    if(data.length === 0) { alert("Bu guruh uchun ma'lumot yo'q!"); return; }
+    
+    // Create HTML for Word Doc
+    let htmlContent = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset='utf-8'><title>Hisobot</title></head><body>
+    <h2 style="text-align:center;">Smart Nazorat - O'quvchilar Hisoboti</h2>
+    <table border="1" style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+        <tr style="background-color: #f1f5f9;">
+            <th style="padding: 5px;">T/r</th><th style="padding: 5px;">Ism Familiya</th><th style="padding: 5px;">Sinf</th><th style="padding: 5px;">Tel</th><th style="padding: 5px;">Holati / Izoh</th><th style="padding: 5px;">Oxirgi tel</th>
+        </tr>
+    `;
+    
+    data.forEach((s, idx) => {
+        let holat = s.isUrgent ? `<b>⚠️ DIQQAT: ${s.urgentReason}</b>` : (s.notes ? s.notes : '-');
+        let oxirgiTel = s.lastCall ? formatDateUi(s.lastCall) : "QILINMAGAN";
+        
+        htmlContent += `
+        <tr>
+            <td style="padding: 5px;">${idx+1}</td>
+            <td style="padding: 5px;">${s.firstName} ${s.lastName}</td>
+            <td style="padding: 5px;">${s.classGroup || 'Asosiy'}</td>
+            <td style="padding: 5px;">${s.phone}</td>
+            <td style="padding: 5px;">${holat}</td>
+            <td style="padding: 5px;">${oxirgiTel}</td>
+        </tr>
+        `;
+    });
+    
+    htmlContent += `</table></body></html>`;
+    
+    const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const d = new Date();
+    link.download = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.doc`;
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    openTelegramAfterDownload();
+    closeExportModal();
+};
+
+window.exportToTelegramText = () => {
+    const data = getExportData();
+    if(data.length === 0) { alert("Bu guruh uchun ma'lumot yo'q!"); return; }
+    
+    let reportList = [];
+    data.forEach(s => {
         if (s.isUrgent) {
             reportList.push(`🚨 ${s.firstName} ${s.lastName} - (Sabab: ${s.urgentReason || 'Muammo'})`);
         } else {
             const daysAgo = calculateDaysAgo(s.lastCall);
             if (s.lastCall === null) {
-                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (Hali bir marta ham qo'ng'iroq qilinmagan)`);
+                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (Hali qo'ng'iroq qilinmagan)`);
             } else if (daysAgo !== null && daysAgo >= 3) {
                 reportList.push(`🔴 ${s.firstName} ${s.lastName} - (${daysAgo} kun o'tdi)`);
             }
@@ -603,21 +717,22 @@ window.sendTelegramReport = () => {
     });
 
     if (reportList.length === 0) {
-        alert("Hammasi a'lo! Hozircha hech kimga telefon qilishingiz shart emas.");
+        alert("Hammasi a'lo! Hozircha ushbu guruhda muammoli o'quvchi yo'q.");
         return;
     }
 
+    const filterText = document.getElementById('exportClassFilter').options[document.getElementById('exportClassFilter').selectedIndex].text;
     const todayStr = new Date().toLocaleDateString('uz-UZ');
-    let message = `📅 Kunlik Hisobot (Sana: ${todayStr})\n\n`;
+    
+    let message = `📅 Kunlik Hisobot (Sana: ${todayStr}, ${filterText})\n\n`;
     message += `⚠️ Ustoz, quyidagi o'quvchilar bo'yicha ogohlantirish bering:\n\n`;
     message += reportList.map((item, i) => `${i + 1}. ${item}`).join('\n');
     message += `\n\n🤖 Smart Nazorat tizimi orqali eslatma`;
 
     const encodedMessage = encodeURIComponent(message);
     const telegramUrl = `https://t.me/aliliyev_2225?text=${encodedMessage}`;
-    
-    // Open Telegram URL
     window.open(telegramUrl, '_blank');
+    closeExportModal();
 };
 
 // Initial Render
