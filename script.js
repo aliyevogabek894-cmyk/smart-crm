@@ -167,12 +167,26 @@ function render() {
             const { borderClass, tags, problemHtml } = evaluateStudent(student);
             const delay = 0.9 + (index * 0.1); // Staggering
             
+            // Generate last feedback html
+            let lastFeedbackHtml = '';
+            if (student.callHistory && student.callHistory.length > 0) {
+                let sortedHistory = [...student.callHistory].sort((a,b) => new Date(b.date) - new Date(a.date));
+                let lastRecord = sortedHistory[0];
+                if(lastRecord && lastRecord.reason) {
+                    lastFeedbackHtml = `<div style="font-size: 0.85rem; color: #0284c7; margin-top: 0.4rem; padding: 0.4rem; background: #e0f2fe; border-radius: 6px; display: inline-block;">💬 <b>Ota-ona fikri:</b> ${lastRecord.reason}</div>`;
+                }
+            }
+
+            // Cleanup phone number for link
+            let cleanPhone = student.phone.replace(/[^0-9+]/g, '');
+            
             return `
             <div class="student-card stagger-item ${borderClass}" style="animation-delay: ${delay}s;" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
                 <div class="student-info">
                     <h3>${student.firstName} ${student.lastName}</h3>
-                    <p>📞 ${student.phone}</p>
+                    <p>📞 <a href="tel:${cleanPhone}" style="color: var(--text-main); font-weight: 600; text-decoration: none;">${student.phone}</a></p>
                     <p>📝 ${student.notes || "Izoh yo'q"}</p>
+                    ${lastFeedbackHtml}
                     <div class="tags-container">
                         ${tags}
                     </div>
@@ -301,7 +315,7 @@ searchInput.addEventListener('input', render);
 window.markCalled = (id) => {
     const idx = students.findIndex(s => s.id === id);
     if(idx !== -1) {
-        const reason = prompt("Nimaga tel qildingiz? Qisqacha izoh yozing:", "");
+        const reason = prompt("Suhbat qanday o'tdi? Ota-ona qanday taklif / e'tiroz bildirdi?\n(Xohlasangiz bo'sh qoldiring yoki 'Yaxshi' deb yozing)", "");
         if (reason === null) return; // If cancelled, do not log call
 
         students[idx].lastCall = getTodayString();
@@ -316,6 +330,7 @@ window.markCalled = (id) => {
         students[idx].isUrgent = false; // Auto un-draft when called
         saveStudents();
         renderUrgentBadges();
+        render(); // update UI with the new parent feedback
     }
 };
 
