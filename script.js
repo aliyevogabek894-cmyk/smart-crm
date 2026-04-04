@@ -190,9 +190,9 @@ function render() {
             <div class="student-card stagger-item ${borderClass}" style="animation-delay: ${delay}s;" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
                 <div class="student-info">
                     <h3>${student.firstName} ${student.lastName}</h3>
-                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
                         <span>📞 ${student.phone}</span>
-                        <a href="tel:${cleanPhone}" style="background: #e0f2fe; color: #0284c7; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: bold; border: 1px solid #bae6fd; box-shadow: 0 2px 4px rgba(2, 132, 199, 0.1);">
+                        <a href="tel:${cleanPhone}" class="tel-link-btn">
                             📲 Tel qilish
                         </a>
                     </div>
@@ -694,19 +694,33 @@ window.exportToExcel = () => {
     const d = new Date();
     const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.xlsx`;
     
-    // Telegramni avval ochamiz (popup blocker ushlab qolmasligi uchun)
-    openTelegramAfterDownload();
-    
-    // Keyin faylni beramiz
-    XLSX.writeFile(workbook, fileName);
-    closeExportModal(); // close modal after action
+    try {
+        const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/octet-stream' });
+        const file = new File([blob], fileName, { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                title: 'Excel Hisobot',
+                files: [file]
+            }).then(() => closeExportModal()).catch(() => closeExportModal());
+        } else {
+            openTelegramAfterDownload();
+            XLSX.writeFile(workbook, fileName);
+            closeExportModal();
+        }
+    } catch (e) {
+        console.error(e);
+        openTelegramAfterDownload();
+        XLSX.writeFile(workbook, fileName);
+        closeExportModal();
+    }
 };
 
 window.exportToWord = () => {
     const data = getExportData();
     if(data.length === 0) { alert("Bu guruh uchun ma'lumot yo'q!"); return; }
     
-    // Create HTML for Word Doc
     let htmlContent = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head><meta charset='utf-8'><title>Hisobot</title></head><body>
@@ -736,22 +750,27 @@ window.exportToWord = () => {
     htmlContent += `</table></body></html>`;
     
     const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    
     const d = new Date();
-    link.download = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.doc`;
+    const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.doc`;
+    const file = new File([blob], fileName, { type: 'application/msword' });
     
-    // Telegramni avval ochamiz (popup blocker uchun)
-    openTelegramAfterDownload();
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    closeExportModal();
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+            title: 'Word Hisobot',
+            files: [file]
+        }).then(() => closeExportModal()).catch(() => closeExportModal());
+    } else {
+        openTelegramAfterDownload();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        closeExportModal();
+    }
 };
 
 window.exportToTelegramText = () => {

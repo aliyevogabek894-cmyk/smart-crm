@@ -409,6 +409,27 @@ input:focus, textarea:focus, select:focus {
 .tag-blue { background: #e0f2fe; color: #0284c7; }
 .tag-yellow { background: var(--warning-light); color: #d97706; }
 
+.tel-link-btn {
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: 1px solid #bae6fd;
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s;
+}
+
+.tel-link-btn:active {
+    background: #bae6fd;
+    transform: scale(0.95);
+}
+
 .actions {
     display: flex;
     gap: 0.8rem;
