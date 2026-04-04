@@ -125,7 +125,7 @@
     <!-- Scripts (Libraries) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script src="script.js?v=14"></script>
+    <script src="script.js?v=15"></script>
 
     <!-- Export Modal -->
     <div id="exportModal" class="modal">
@@ -146,6 +146,23 @@
                 <button class="primary-btn" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 6px 0 #1e3a8a;" onclick="exportToWord()">📝 Word fayl yuklab olish</button>
                 <button class="primary-btn" style="background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%); box-shadow: 0 6px 0 #005f8f;" onclick="exportToTelegramText()">💬 Faqat text (Telegram xabar)</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Call Feedback Modal -->
+    <div id="callFeedbackModal" class="modal">
+        <div class="modal-content glass-panel" style="max-width: 450px;">
+            <span class="close-btn" onclick="closeCallFeedbackModal()">&times;</span>
+            <h2 style="font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-main);">📞 Qo'ng'iroq Tafsilotlari</h2>
+            <div style="margin-bottom: 1rem; text-align: left;">
+                <label style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">1. Nimaga telefon qildingiz? (Sizning maqsadingiz)</label>
+                <textarea id="callReasonInput" placeholder="Masalan: Dars qoldirgani uchun, yoki to'lov masalasida..." style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; resize: vertical; min-height: 60px;"></textarea>
+            </div>
+            <div style="margin-bottom: 1.5rem; text-align: left;">
+                <label style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">2. Ota-onaning fikri / taklifi (Nima dedi?)</label>
+                <textarea id="parentFeedbackInput" placeholder="Masalan: Ertaga jo'nataman dedi, yoki sal qattiqroq ushlang dedi..." style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; resize: vertical; min-height: 60px;"></textarea>
+            </div>
+            <button class="primary-btn" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%);" onclick="saveCallFeedback()">💾 Saqlash</button>
         </div>
     </div>
 

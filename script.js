@@ -172,8 +172,14 @@ function render() {
             if (student.callHistory && student.callHistory.length > 0) {
                 let sortedHistory = [...student.callHistory].sort((a,b) => new Date(b.date) - new Date(a.date));
                 let lastRecord = sortedHistory[0];
-                if(lastRecord && lastRecord.reason) {
-                    lastFeedbackHtml = `<div style="font-size: 0.85rem; color: #0284c7; margin-top: 0.4rem; padding: 0.4rem; background: #e0f2fe; border-radius: 6px; display: inline-block;">💬 <b>Ota-ona fikri:</b> ${lastRecord.reason}</div>`;
+                if(lastRecord) {
+                    let rTeacher = lastRecord.teacherReason || "Noma'lum (Eski yozuv)";
+                    let rParent = lastRecord.parentFeedback || (lastRecord.reason || "Noma'lum");
+                    lastFeedbackHtml = `
+                    <div style="font-size: 0.85rem; margin-top: 0.5rem; padding: 0.5rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+                        <span style="color: #64748b; display: block; margin-bottom: 0.3rem;">👨‍🏫 <b>Maqsadingiz:</b> ${rTeacher}</span>
+                        <span style="color: #0284c7; display: block;">💬 <b>Ota-ona fikri:</b> ${rParent}</span>
+                    </div>`;
                 }
             }
 
@@ -311,12 +317,28 @@ form.addEventListener('submit', (e) => {
 // Event: Search
 searchInput.addEventListener('input', render);
 
-// Action: Mark Called
+window.currentCallId = null;
+
+// Action: Mark Called Modal Open
 window.markCalled = (id) => {
+    window.currentCallId = id;
+    document.getElementById('callReasonInput').value = '';
+    document.getElementById('parentFeedbackInput').value = '';
+    document.getElementById('callFeedbackModal').classList.add('active');
+};
+
+window.closeCallFeedbackModal = () => {
+    document.getElementById('callFeedbackModal').classList.remove('active');
+    window.currentCallId = null;
+};
+
+window.saveCallFeedback = () => {
+    const id = window.currentCallId;
+    if(!id) return;
     const idx = students.findIndex(s => s.id === id);
     if(idx !== -1) {
-        const reason = prompt("Suhbat qanday o'tdi? Ota-ona qanday taklif / e'tiroz bildirdi?\n(Xohlasangiz bo'sh qoldiring yoki 'Yaxshi' deb yozing)", "");
-        if (reason === null) return; // If cancelled, do not log call
+        const teacherReason = document.getElementById('callReasonInput').value.trim() || 'Izohsiz';
+        const parentFeedback = document.getElementById('parentFeedbackInput').value.trim() || 'Izohsiz';
 
         students[idx].lastCall = getTodayString();
         if (!students[idx].callHistory) {
@@ -324,13 +346,16 @@ window.markCalled = (id) => {
         }
         students[idx].callHistory.push({
             date: new Date().toISOString(),
-            reason: reason.trim()
+            teacherReason: teacherReason,
+            parentFeedback: parentFeedback,
+            reason: `Maqsad: ${teacherReason} | Ota-ona fikri: ${parentFeedback}`
         });
         
         students[idx].isUrgent = false; // Auto un-draft when called
         saveStudents();
         renderUrgentBadges();
         render(); // update UI with the new parent feedback
+        closeCallFeedbackModal();
     }
 };
 
@@ -373,7 +398,18 @@ window.openHistoryModal = () => {
 
         records.forEach(record => {
             let dateRaw = typeof record === 'string' ? record : record.date;
-            let reasonStr = typeof record === 'string' ? '' : (record.reason ? `<br><span style="color:#64748b; font-size: 0.85rem; margin-top: 0.2rem; display: inline-block;">💬 <b>Suhbat:</b> ${record.reason}</span>` : '');
+            let reasonStr = '';
+            
+            if (typeof record !== 'string') {
+                if (record.teacherReason || record.parentFeedback) {
+                    reasonStr = `<div style="margin-top: 0.3rem; padding-left: 0.8rem; border-left: 2px solid #cbd5e1;">
+                         <span style="color:#64748b; font-size: 0.85rem; display: block;">👨‍🏫 Maqsad: ${record.teacherReason || '-'}</span>
+                         <span style="color:#0284c7; font-size: 0.85rem; display: block;">💬 Ota-ona fikri: ${record.parentFeedback || '-'}</span>
+                     </div>`;
+                } else if(record.reason) { 
+                    reasonStr = `<br><span style="color:#64748b; font-size: 0.85rem; margin-top: 0.2rem; display: inline-block;">💬 <b>Suhbat:</b> ${record.reason}</span>`;
+                }
+            }
 
             const d = new Date(dateRaw);
             const niceDate = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()} — <b>${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}</b>`;
