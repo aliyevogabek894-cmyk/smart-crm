@@ -610,12 +610,7 @@ function getExportData() {
 }
 
 function openTelegramAfterDownload() {
-    setTimeout(() => {
-        const confirmTg = confirm("Fayl kompyuter/telefoningizga muvaffaqiyatli yuklab olindi!\n\nEndi avtomat tarzda Telegramni ochib sirdoshingizga (@aliliyev_2225) yuborishni xohlaysizmi?");
-        if(confirmTg) {
-            window.open('https://t.me/aliliyev_2225', '_blank');
-        }
-    }, 1000);
+    window.open('https://t.me/aliliyev_2225', '_blank');
 }
 
 window.exportToExcel = () => {
@@ -643,8 +638,11 @@ window.exportToExcel = () => {
     const d = new Date();
     const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.xlsx`;
     
-    XLSX.writeFile(workbook, fileName);
+    // Telegramni avval ochamiz (popup blocker ushlab qolmasligi uchun)
     openTelegramAfterDownload();
+    
+    // Keyin faylni beramiz
+    XLSX.writeFile(workbook, fileName);
     closeExportModal(); // close modal after action
 };
 
@@ -689,12 +687,14 @@ window.exportToWord = () => {
     const d = new Date();
     link.download = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}.doc`;
     
+    // Telegramni avval ochamiz (popup blocker uchun)
+    openTelegramAfterDownload();
+    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     
-    openTelegramAfterDownload();
     closeExportModal();
 };
 
