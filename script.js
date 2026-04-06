@@ -29,7 +29,11 @@ if (loginForm) {
 const firebaseConfig = {
   apiKey: "AIzaSyBOEZGzczHy9njwXDtNA7TlM-vEzngbFDw",
   authDomain: "domla-aliyev.firebaseapp.com",
-  projectId: "domla-aliyev"
+  projectId: "domla-aliyev",
+  storageBucket: "domla-aliyev.firebasestorage.app",
+  messagingSenderId: "762189436245",
+  appId: "1:762189436245:web:78132d7e3e036b942d4bdc",
+  measurementId: "G-PLR0EHDC9Q"
 };
 
 // Initialize Firebase if not already initialized
