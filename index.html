@@ -57,7 +57,7 @@
                     <h2 id="todayCallCount">0</h2>
                 </div>
             </div>
-            <div class="stat-card stat-alert" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3">
+            <div class="stat-card stat-alert" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3" style="cursor: pointer;" onclick="openMostCalledModal()">
                 <div class="stat-icon">⚠️</div>
                 <div class="stat-info">
                     <span class="stat-title">Eng e'tiborsiz o'quvchi</span>
@@ -204,6 +204,18 @@
                 <textarea id="editNotes" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
                 <button type="submit" class="primary-btn">Saqlash</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Most Called Modal -->
+    <div id="mostCalledModal" class="modal">
+        <div class="modal-content glass-panel" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeMostCalledModal()">&times;</span>
+            <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">🔥 Eng ko'p qo'ng'iroq qilinganlar (3+ marta)</h2>
+            <div id="mostCalledContent" class="history-list" style="margin-top: 1rem;">
+                <!-- Classes or Students will be injected here -->
+            </div>
+            <button id="mostCalledBackBtn" class="primary-btn" style="display: none; width: 100%; margin-top: 1rem; background: #64748b;" onclick="renderMostCalledClasses()">⬅️ Sinflarga qaytish</button>
         </div>
     </div>
 </body>

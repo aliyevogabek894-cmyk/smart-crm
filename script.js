@@ -565,6 +565,87 @@ if(editStudentForm) {
     });
 }
 
+// Most Called Modal Functions
+window.openMostCalledModal = () => {
+    document.getElementById('mostCalledModal').classList.add('active');
+    renderMostCalledClasses();
+};
+
+window.closeMostCalledModal = () => {
+    document.getElementById('mostCalledModal').classList.remove('active');
+};
+
+function getStudentCallCount(student) {
+    if (student.callHistory && student.callHistory.length > 0) {
+        return student.callHistory.length;
+    }
+    return student.lastCall ? 1 : 0;
+}
+
+window.renderMostCalledClasses = () => {
+    const listEl = document.getElementById('mostCalledContent');
+    const backBtn = document.getElementById('mostCalledBackBtn');
+    if (backBtn) backBtn.style.display = 'none';
+    
+    let html = '';
+    const sortedClasses = [...classes].sort();
+    
+    sortedClasses.forEach(cls => {
+        let classStudents = students.filter(s => (s.classGroup === cls || (s.classGroup == null && cls === 'Asosiy')));
+        let problemStudentsCount = classStudents.filter(s => getStudentCallCount(s) >= 3).length;
+        
+        html += `
+        <div class="history-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #e2e8f0;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'" onclick="showMostCalledStudents('${cls}')">
+            <b style="font-size: 1.1rem; color: var(--primary);">🏫 ${cls}</b>
+            <span style="background: ${problemStudentsCount > 0 ? 'var(--danger)' : '#cbd5e1'}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; font-weight: bold;">
+                ${problemStudentsCount} ta (3+ marta)
+            </span>
+        </div>
+        `;
+    });
+
+    if (sortedClasses.length === 0) {
+        html = '<p style="text-align:center; color:#64748b;">Sinflar mavjud emas</p>';
+    }
+    listEl.innerHTML = html;
+};
+
+window.showMostCalledStudents = (clsName) => {
+    const listEl = document.getElementById('mostCalledContent');
+    const backBtn = document.getElementById('mostCalledBackBtn');
+    if (backBtn) backBtn.style.display = 'block';
+    
+    let classStudents = students.filter(s => (s.classGroup === clsName || (s.classGroup == null && clsName === 'Asosiy')));
+    
+    let problemStudents = classStudents.filter(s => getStudentCallCount(s) >= 3);
+    problemStudents.sort((a,b) => getStudentCallCount(b) - getStudentCallCount(a));
+    problemStudents = problemStudents.slice(0, 7);
+    
+    let html = `<div style="margin-bottom: 1rem; color: var(--primary); font-weight: bold; font-size: 1.1rem; text-align: center;">🏫 ${clsName} sinfi (Top 7)</div>`;
+    
+    if (problemStudents.length === 0) {
+        html += `<p style="text-align:center; color:#64748b; padding: 1rem;">Bu sinfda 3 marta va undan ko'p qo'ng'iroq qilingan o'quvchilar yo'q.</p>`;
+    } else {
+        problemStudents.forEach((s, ix) => {
+            const calls = getStudentCallCount(s);
+            html += `
+            <div class="history-item" style="flex-direction: column; align-items: flex-start; margin-bottom: 0.8rem; padding: 1rem; border-left: 4px solid var(--danger); background: #fffcfc; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                    <b style="font-size: 1.1rem;">${ix + 1}. 👤 ${s.firstName} ${s.lastName}</b>
+                    <span style="background: var(--danger); color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.85rem; font-weight: bold;">
+                        📞 ${calls} marta
+                    </span>
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.4rem;">📞 ${s.phone}</div>
+                <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem;"><i>Izoh:</i> ${s.notes || "Yo'q"}</div>
+            </div>
+            `;
+        });
+    }
+    
+    listEl.innerHTML = html;
+};
+
 // Draft Functionality
 if (draftInput) {
     draftInput.addEventListener('input', (e) => {
