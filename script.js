@@ -25,16 +25,101 @@ if (loginForm) {
     });
 }
 
-// State
-let students = JSON.parse(localStorage.getItem('smart_students')) || [];
-let classes = JSON.parse(localStorage.getItem('smart_classes')) || [];
+// Firebase Setup
+const firebaseConfig = {
+  apiKey: "AIzaSyBOEZGzczHy9njwXDtNA7TlM-vEzngbFDw",
+  authDomain: "domla-aliyev.firebaseapp.com",
+  projectId: "domla-aliyev"
+};
+
+// Initialize Firebase if not already initialized
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+// Application State
+let students = [];
+let classes = [];
 let currentClassFilter = 'all';
 
-// Migrate old data on startup if needed
-if (classes.length === 0) {
-    classes = [...new Set(students.map(s => s.classGroup || 'Asosiy'))];
-    if (classes.length === 0) classes = ['Asosiy'];
-    localStorage.setItem('smart_classes', JSON.stringify(classes));
+// Load initial data from Firebase
+async function loadData() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if(loadingOverlay) loadingOverlay.style.display = 'flex';
+    
+    try {
+        const docRef = db.collection("crmData").doc("main");
+        const docSnap = await docRef.get();
+        
+        let shouldSave = false;
+
+        if (docSnap.exists) {
+            const data = docSnap.data();
+            students = data.students || [];
+            classes = data.classes || [];
+        } else {
+            console.log("No data found in Firebase! Inheriting from LocalStorage if exists...");
+            // Migrate local data if it exists
+            const localStudents = JSON.parse(localStorage.getItem('smart_students')) || [];
+            if (localStudents.length > 0) {
+                students = localStudents;
+                classes = JSON.parse(localStorage.getItem('smart_classes')) || [];
+                shouldSave = true;
+            }
+        }
+        
+        // Migrate old data logic
+        if (classes.length === 0 && students.length > 0) {
+            classes = [...new Set(students.map(s => s.classGroup || 'Asosiy'))];
+            if (classes.length === 0) classes = ['Asosiy'];
+            shouldSave = true;
+        }
+
+        if (shouldSave) {
+            await saveStudentsToFirebase();
+        }
+
+        renderClassOptions();
+        renderUrgentBadges();
+        render();
+    } catch (e) {
+        console.error("Firebase'dan o'qishda xatolik:", e);
+        // Fallback to empty for now
+    } finally {
+        if(loadingOverlay) loadingOverlay.style.display = 'none';
+        
+        // Check if there is a local "6 b" missing online that we can rescue temporarily
+        const localStudents = JSON.parse(localStorage.getItem('smart_students')) || [];
+        if (localStudents.length > students.length) {
+            // we have more local students, force save to online to rescue
+            students = localStudents;
+            classes = JSON.parse(localStorage.getItem('smart_classes')) || [];
+            saveStudents(); 
+            renderClassOptions();
+            renderUrgentBadges();
+            render();
+        }
+    }
+}
+
+// Wrapper for saving
+function saveStudents() {
+    saveStudentsToFirebase();
+    render();
+}
+
+async function saveStudentsToFirebase() {
+    try {
+        await db.collection("crmData").doc("main").set({
+            students: students,
+            classes: classes
+        });
+        console.log("Muvaffaqiyatli saqlandi!");
+    } catch (e) {
+        console.error("Saqlashda xatolik:", e);
+        alert("Baza bilan bog'lanilmayapti! Siz internetga ulanmagan bo'lishingiz mumkin yoki Firebase'da yozishga (Write) ruxsat berilmagan (Rules qismi).");
+    }
 }
 
 // DOM Elements
@@ -82,11 +167,8 @@ function formatDateUi(dateStr) {
     return `${d}.${m}.${y}`;
 }
 
-// Save to LocalStorage
-function saveStudents() {
-    localStorage.setItem('smart_students', JSON.stringify(students));
-    render();
-}
+// Replaced by Firebase save logic above
+// function saveStudents() { ... }
 
 // Process student to determine tags and status
 function evaluateStudent(student) {
@@ -298,8 +380,8 @@ form.addEventListener('submit', (e) => {
         finalClass = newClassInput.value.trim().toUpperCase();
         if (!classes.includes(finalClass)) {
             classes.push(finalClass);
-            localStorage.setItem('smart_classes', JSON.stringify(classes));
             renderClassOptions();
+            // will be saved by saveStudents below
         }
     }
 
@@ -480,7 +562,6 @@ window.renameClass = (oldName) => {
         classes = classes.map(c => c === oldName ? finalName : c);
         // Ensure uniqueness
         classes = [...new Set(classes)];
-        localStorage.setItem('smart_classes', JSON.stringify(classes));
         
         // Update all students connected to this class
         students.forEach(s => {
@@ -502,7 +583,7 @@ window.renameClass = (oldName) => {
 window.removeClass = (clsName) => {
     if (confirm(`Diqqat! "${clsName}" sinfini o'chirasizmi?\n\n(Dastur xavfsizligi uchun bu sinfdagi barcha o'quvchilar "Asosiy" guruhiga o'tkaziladi. O'quvchilar o'chib ketmaydi.)`)) {
         classes = classes.filter(c => c !== clsName);
-        localStorage.setItem('smart_classes', JSON.stringify(classes));
+        saveStudents(); // Now pushes classes array as well
 
         students.forEach(s => {
             if (s.classGroup === clsName) {
@@ -891,7 +972,5 @@ window.exportToTelegramText = () => {
     closeExportModal();
 };
 
-// Initial Render
-renderClassOptions();
-renderUrgentBadges();
-render();
+// Start the application by loading data from Firebase
+loadData();

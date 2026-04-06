@@ -127,7 +127,10 @@
     <!-- Scripts (Libraries) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script src="script.js?v=21"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+    <script src="script.js?v=22"></script>
 
     <!-- Export Modal -->
     <div id="exportModal" class="modal">
@@ -217,6 +220,13 @@
             </div>
             <button id="mostCalledBackBtn" class="primary-btn" style="display: none; width: 100%; margin-top: 1rem; background: #64748b;" onclick="renderMostCalledClasses()">⬅️ Sinflarga qaytish</button>
         </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="width: 50px; height: 50px; border: 5px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 1rem; color: var(--primary); font-weight: bold;">Ma'lumotlar serverdan olinmoqda...</p>
+        <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
     </div>
 </body>
 </html>
