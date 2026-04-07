@@ -159,7 +159,37 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=50"></script>
+    
+    <!-- MUHIM: localStorage ni tozalash - eski kod Firebase ustiga yozib qo'ymasligi uchun -->
+    <script>
+        // Barcha eski localStorage ma'lumotlarini darhol tozalash
+        localStorage.removeItem('smart_students');
+        localStorage.removeItem('smart_classes');
+        localStorage.removeItem('smart_data');
+        
+        // Service Worker larni o'chirish (agar mavjud bo'lsa)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        
+        // Cache API ni tozalash
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) caches.delete(name);
+            });
+        }
+    </script>
+    
+    <!-- Har safar yangi script yuklash uchun timestamp ishlatiladi -->
+    <script>
+        var s = document.createElement('script');
+        s.src = 'script.js?v=' + Date.now();
+        document.currentScript.parentNode.insertBefore(s, document.currentScript.nextSibling);
+    </script>
 
     <!-- Export Modal -->
     <div id="exportModal" class="modal">
