@@ -92,18 +92,6 @@ async function loadData() {
         // Fallback to empty for now
     } finally {
         if(loadingOverlay) loadingOverlay.style.display = 'none';
-        
-        // Check if there is a local "6 b" missing online that we can rescue temporarily
-        const localStudents = JSON.parse(localStorage.getItem('smart_students')) || [];
-        if (localStudents.length > students.length) {
-            // we have more local students, force save to online to rescue
-            students = localStudents;
-            classes = JSON.parse(localStorage.getItem('smart_classes')) || [];
-            saveStudents(); 
-            renderClassOptions();
-            renderUrgentBadges();
-            render();
-        }
     }
 }
 
