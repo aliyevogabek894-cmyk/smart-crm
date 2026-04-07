@@ -47,40 +47,29 @@ let students = [];
 let classes = [];
 let currentClassFilter = 'all';
 
-// Load initial data from Firebase
+// Load initial data from Firebase ONLY
 async function loadData() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     if(loadingOverlay) loadingOverlay.style.display = 'flex';
+
+    // Eski localStorage ma'lumotlarni tozalaymiz - endi kerak emas
+    localStorage.removeItem('smart_students');
+    localStorage.removeItem('smart_classes');
     
     try {
         const docRef = db.collection("crmData").doc("main");
         const docSnap = await docRef.get();
-        
-        let shouldSave = false;
 
         if (docSnap.exists) {
             const data = docSnap.data();
             students = data.students || [];
             classes = data.classes || [];
-        } else {
-            console.log("No data found in Firebase! Inheriting from LocalStorage if exists...");
-            // Migrate local data if it exists (one-time only)
-            const localStudents = JSON.parse(localStorage.getItem('smart_students')) || [];
-            if (localStudents.length > 0) {
-                students = localStudents;
-                classes = JSON.parse(localStorage.getItem('smart_classes')) || [];
-                shouldSave = true;
-            }
         }
         
         // Migrate old data logic
         if (classes.length === 0 && students.length > 0) {
             classes = [...new Set(students.map(s => s.classGroup || 'Asosiy'))];
             if (classes.length === 0) classes = ['Asosiy'];
-            shouldSave = true;
-        }
-
-        if (shouldSave) {
             await saveStudentsToFirebase();
         }
 
