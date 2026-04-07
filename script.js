@@ -64,7 +64,7 @@ async function loadData() {
             classes = data.classes || [];
         } else {
             console.log("No data found in Firebase! Inheriting from LocalStorage if exists...");
-            // Migrate local data if it exists
+            // Migrate local data if it exists (one-time only)
             const localStudents = JSON.parse(localStorage.getItem('smart_students')) || [];
             if (localStudents.length > 0) {
                 students = localStudents;
@@ -89,10 +89,21 @@ async function loadData() {
         render();
     } catch (e) {
         console.error("Firebase'dan o'qishda xatolik:", e);
-        // Fallback to empty for now
     } finally {
         if(loadingOverlay) loadingOverlay.style.display = 'none';
     }
+
+    // Realtime listener - boshqa qurilmada o'zgarish bo'lsa avtomatik yangilaydi
+    db.collection("crmData").doc("main").onSnapshot((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            students = data.students || [];
+            classes = data.classes || [];
+            renderClassOptions();
+            renderUrgentBadges();
+            render();
+        }
+    });
 }
 
 // Wrapper for saving
