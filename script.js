@@ -865,7 +865,7 @@ window.exportToExcel = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Hisobot");
 
     const d = new Date();
-    const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.xlsx`;
+    const fileName = `Ustoz_Aliyev_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.xlsx`;
 
     try {
         const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -896,7 +896,7 @@ window.exportToWord = () => {
     let htmlContent = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head><meta charset='utf-8'><title>Hisobot</title></head><body>
-    <h2 style="text-align:center;">Smart Nazorat - O'quvchilar Hisoboti</h2>
+    <h2 style="text-align:center;">Ustoz Aliyev - O'quvchi Hisoboti</h2>
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <tr style="background-color: #f1f5f9;">
             <th style="padding: 5px;">T/r</th><th style="padding: 5px;">Ism Familiya</th><th style="padding: 5px;">Sinf</th><th style="padding: 5px;">Tel</th><th style="padding: 5px;">Holati / Izoh</th><th style="padding: 5px;">Oxirgi tel</th>
@@ -921,7 +921,7 @@ window.exportToWord = () => {
 
     const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
     const d = new Date();
-    const fileName = `Smart_Nazorat_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.doc`;
+    const fileName = `Ustoz_Aliyev_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.doc`;
     const file = new File([blob], fileName, { type: 'application/msword' });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -971,7 +971,7 @@ window.exportToTelegramText = () => {
     let message = `📅 Kunlik Hisobot (${todayStr}, ${filterText})\n\n`;
     message += `⚠️ Quyidagi o'quvchilar bo'yicha ogohlantirish:\n\n`;
     message += reportList.map((item, i) => `${i + 1}. ${item}`).join('\n');
-    message += `\n\n🤖 Smart Nazorat tizimi`;
+    message += `\n\n🤖 Ustoz Aliyev tizimi orqali`;
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://t.me/alliyev_2225?text=${encodedMessage}`, '_blank');
