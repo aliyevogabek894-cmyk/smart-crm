@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aliyevogabek894-cmyk.github.io/smart-crm/sitemap.xml
