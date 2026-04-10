@@ -1011,22 +1011,16 @@ window.exportStyledReport = (type) => {
     const fileName = `Ustoz_Aliyev_Hisobot_${dateStr}.${fileExtension}`;
     const file = new File([blob], fileName, { type: blobType });
 
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ title: 'Hisobot', files: [file] })
-            .then(() => closeExportModal())
-            .catch(() => closeExportModal());
-    } else {
-        openTelegramAfterDownload();
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        closeExportModal();
-    }
+    openTelegramAfterDownload();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    closeExportModal();
 };
 
 window.exportToTelegramText = () => {
