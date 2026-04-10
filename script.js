@@ -950,90 +950,69 @@ function openTelegramAfterDownload() {
     window.open('https://t.me/alliyev_2225', '_blank');
 }
 
-window.exportToExcel = () => {
-    if (typeof XLSX === 'undefined') {
-        alert("Kutubxona yuklanmoqda, 2-3 soniya kuting...");
-        return;
-    }
+window.exportStyledReport = (type) => {
     const data = getExportData();
     if (data.length === 0) { alert("Ma'lumot yo'q!"); return; }
-
-    const excelData = data.map((s, index) => ({
-        "T/r": index + 1,
-        "Ism Familiya": s.firstName + ' ' + s.lastName,
-        "Sinf": s.classGroup || 'Asosiy',
-        "Ota-ona raqami": s.phone,
-        "Izoh": s.isUrgent ? s.urgentReason : (s.notes || ""),
-        "Oxirgi qo'ng'iroq": s.lastCall ? formatDateUi(s.lastCall) : "Qilinmagan",
-        "Holati": s.isUrgent ? "TEZDA QO'NG'IROQ" : (s.lastCall ? "Gaplashilgan" : "Tel qilinmagan")
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Hisobot");
 
     const d = new Date();
-    const fileName = `Ustoz_Aliyev_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.xlsx`;
-
-    try {
-        const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        const blob = new Blob([wbout], { type: 'application/octet-stream' });
-        const file = new File([blob], fileName, { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({ title: 'Excel Hisobot', files: [file] })
-                .then(() => closeExportModal())
-                .catch(() => closeExportModal());
-        } else {
-            openTelegramAfterDownload();
-            XLSX.writeFile(workbook, fileName);
-            closeExportModal();
-        }
-    } catch (e) {
-        console.error(e);
-        openTelegramAfterDownload();
-        XLSX.writeFile(workbook, fileName);
-        closeExportModal();
-    }
-};
-
-window.exportToWord = () => {
-    const data = getExportData();
-    if (data.length === 0) { alert("Ma'lumot yo'q!"); return; }
+    const dateStr = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+    const filterText = document.getElementById('exportClassFilter').options[document.getElementById('exportClassFilter').selectedIndex].text;
 
     let htmlContent = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head><meta charset='utf-8'><title>Hisobot</title></head><body>
-    <h2 style="text-align:center;">Ustoz Aliyev - O'quvchi Hisoboti</h2>
-    <table border="1" style="border-collapse: collapse; width: 100%;">
-        <tr style="background-color: #f1f5f9;">
-            <th style="padding: 5px;">T/r</th><th style="padding: 5px;">Ism Familiya</th><th style="padding: 5px;">Sinf</th><th style="padding: 5px;">Tel</th><th style="padding: 5px;">Holati / Izoh</th><th style="padding: 5px;">Oxirgi tel</th>
-        </tr>`;
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+    <head>
+        <meta charset="utf-8">
+        <title>Hisobot</title>
+        <style>
+            table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }
+            th { background-color: #4338ca; color: #ffffff; padding: 12px; border: 1px solid #1e293b; text-align: center; font-weight: bold; }
+            td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; vertical-align: middle; }
+        </style>
+    </head>
+    <body>
+        <h2 style="text-align: center; color: #4338ca; font-family: Arial, sans-serif;">Ustoz Aliyev - O'quvchi Hisoboti</h2>
+        <p style="text-align: center; color: #64748b; font-family: Arial, sans-serif;">Sana: <b>${dateStr}</b> | Sinf: <b>${filterText}</b></p>
+        <table>
+            <tr>
+                <th>T/r</th>
+                <th>Ism Familiya</th>
+                <th>Sinf</th>
+                <th>Ota-ona telefoni</th>
+                <th>Izoh / Muammo</th>
+                <th>Holati</th>
+                <th>Oxirgi aloqa</th>
+            </tr>`;
 
     data.forEach((s, idx) => {
-        let holat = s.isUrgent ? `<b>⚠️ DIQQAT: ${s.urgentReason}</b>` : (s.notes || '-');
+        let holatTekst = s.isUrgent ? 'TEZDA QO\'NG\'IROQ 🚨' : (s.lastCall ? 'Gaplashilgan ✅' : 'Tel qilinmagan ⏳');
         let oxirgiTel = s.lastCall ? formatDateUi(s.lastCall) : "QILINMAGAN";
+        
+        let rowColor = s.isUrgent ? '#fef2f2' : (s.lastCall ? '#f0fdf4' : '#f8fafc');
+        let textColor = s.isUrgent ? '#dc2626' : (s.lastCall ? '#166534' : '#334155');
 
         htmlContent += `
-        <tr>
-            <td style="padding: 5px;">${idx + 1}</td>
-            <td style="padding: 5px;">${s.firstName} ${s.lastName}</td>
-            <td style="padding: 5px;">${s.classGroup || 'Asosiy'}</td>
-            <td style="padding: 5px;">${s.phone}</td>
-            <td style="padding: 5px;">${holat}</td>
-            <td style="padding: 5px;">${oxirgiTel}</td>
-        </tr>`;
+            <tr style="background-color: ${rowColor}; color: ${textColor};">
+                <td>${idx + 1}</td>
+                <td><b>${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b></td>
+                <td>${escapeHtml(s.classGroup || 'Asosiy')}</td>
+                <td>${escapeHtml(s.phone)}</td>
+                <td>${escapeHtml(s.isUrgent ? s.urgentReason : (s.notes || "-"))}</td>
+                <td>${holatTekst}</td>
+                <td>${oxirgiTel}</td>
+            </tr>`;
     });
 
     htmlContent += `</table></body></html>`;
 
-    const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-    const d = new Date();
-    const fileName = `Ustoz_Aliyev_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}.doc`;
-    const file = new File([blob], fileName, { type: 'application/msword' });
+    let blobType = type === 'excel' ? 'application/vnd.ms-excel' : 'application/msword';
+    let fileExtension = type === 'excel' ? 'xls' : 'doc';
+
+    const blob = new Blob(['\ufeff', htmlContent], { type: blobType });
+    const fileName = `Ustoz_Aliyev_Hisobot_${dateStr}.${fileExtension}`;
+    const file = new File([blob], fileName, { type: blobType });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ title: 'Word Hisobot', files: [file] })
+        navigator.share({ title: 'Hisobot', files: [file] })
             .then(() => closeExportModal())
             .catch(() => closeExportModal());
     } else {
