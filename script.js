@@ -146,11 +146,11 @@ function updateThemeBtn(theme) {
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
         if (theme === 'dark') {
-            btn.innerHTML = '☀️ Kun';
+            btn.innerHTML = '<i class="fas fa-sun me-1"></i> Kun';
             btn.classList.remove('btn-outline-secondary');
             btn.classList.add('btn-outline-light');
         } else {
-            btn.innerHTML = '🌙 Tun';
+            btn.innerHTML = '<i class="fas fa-moon me-1"></i> Tun';
             btn.classList.remove('btn-outline-light');
             btn.classList.add('btn-outline-secondary');
         }
@@ -349,31 +349,31 @@ function evaluateStudent(student) {
 
     if (student.lastCall === null) {
         borderClass = 'border-danger border-2';
-        tags.push(`<span class="badge bg-danger rounded-pill">🔴 TEL QILISH KERAK!</span>`);
+        tags.push(`<span class="badge bg-danger rounded-pill"><i class="fas fa-exclamation-circle me-1"></i> TEL QILISH KERAK!</span>`);
     } else if (daysAgo === 0) {
         borderClass = 'border-success border-2';
-        tags.push(`<span class="badge bg-success rounded-pill">🟢 Bugun qa qayd etilgan</span>`);
+        tags.push(`<span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> Bugun qa qayd etilgan</span>`);
     } else if (daysAgo >= 3) {
         borderClass = 'border-danger border-2';
-        tags.push(`<span class="badge bg-danger rounded-pill">🔴 ${daysAgo} kun o'tdi!</span>`);
+        tags.push(`<span class="badge bg-danger rounded-pill"><i class="fas fa-clock me-1"></i> ${daysAgo} kun o'tdi!</span>`);
     } else {
         borderClass = 'border-info border-2';
-        tags.push(`<span class="badge bg-info text-dark rounded-pill">🔵 ${daysAgo} kun oldin</span>`);
+        tags.push(`<span class="badge bg-info text-dark rounded-pill"><i class="fas fa-calendar-alt me-1"></i> ${daysAgo} kun oldin</span>`);
     }
 
     // Sinf tag
-    tags.unshift(`<span class="badge bg-secondary rounded-pill">🏫 ${escapeHtml(student.classGroup || 'Asosiy')}</span>`);
+    tags.unshift(`<span class="badge bg-secondary rounded-pill"><i class="fas fa-school me-1"></i> ${escapeHtml(student.classGroup || 'Asosiy')}</span>`);
 
     if (student.isUrgent) {
         borderClass = 'border-danger border-3';
-        tags.unshift(`<span class="badge bg-danger rounded-pill fw-bold" style="font-size: 0.85rem;">🚨 TEZDA: ${escapeHtml(student.urgentReason || 'Qoralama')}</span>`);
+        tags.unshift(`<span class="badge bg-danger rounded-pill fw-bold" style="font-size: 0.85rem;"><i class="fas fa-bolt me-1"></i> TEZDA: ${escapeHtml(student.urgentReason || 'Qoralama')}</span>`);
     }
 
     // Problem Signal
     const hasProblem = (student.notes || '').toLowerCase().includes('dars qilm');
     let problemHtml = '';
     if (hasProblem) {
-        problemHtml = `<div class="problem-signal">⚠️ Ota-onaga tezroq qo'ng'iroq qiling!</div>`;
+        problemHtml = `<div class="problem-signal"><i class="fas fa-exclamation-triangle me-1"></i> Ota-onaga tezroq qo'ng'iroq qiling!</div>`;
     }
 
     return { borderClass, tags: tags.join(''), problemHtml, daysAgo };
@@ -384,7 +384,7 @@ function render() {
     // Class filter options
     const uniqueClasses = [...classes].sort();
 
-    let optionsHtml = `<option value="all">📁 Barcha sinflar</option>`;
+    let optionsHtml = `<option value="all"><i class="fas fa-folder me-1"></i> Barcha sinflar</option>`;
     uniqueClasses.forEach(cls => {
         optionsHtml += `<option value="${escapeHtml(cls)}">🏫 ${escapeHtml(cls)} sinfi</option>`;
     });
@@ -428,9 +428,9 @@ function render() {
                     let rTeacher = escapeHtml(lastRecord.teacherReason || "Noma'lum");
                     let rParent = escapeHtml(lastRecord.parentFeedback || (lastRecord.reason || "Noma'lum"));
                     lastFeedbackHtml = `
-                    <div style="font-size: 0.82rem; margin-top: 0.4rem; padding: 0.4rem 0.6rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <span style="color: #64748b; display: block; margin-bottom: 0.2rem;">👨‍🏫 <b>Maqsad:</b> ${rTeacher}</span>
-                        <span style="color: var(--primary); display: block;">💬 <b>Ota-ona:</b> ${rParent}</span>
+                    <div class="feedback-box">
+                        <span class="feedback-teacher"><i class="fas fa-chalkboard-teacher me-1"></i> <b>Maqsad:</b> ${rTeacher}</span>
+                        <span class="feedback-parent"><i class="fas fa-comment-dots me-1"></i> <b>Ota-ona:</b> ${rParent}</span>
                     </div>`;
                 }
             }
@@ -438,24 +438,24 @@ function render() {
             let cleanPhone = student.phone.replace(/[^0-9+]/g, '');
 
             return `
-            <div class="card mb-3 shadow-sm border-0 ${borderClass}" style="animation-delay: ${delay}s;">
+            <div class="card mb-3 glass-card animate-in ${borderClass}" style="animation-delay: ${delay}s;">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between gap-3">
                     <div>
-                        <h5 class="fw-bold mb-2">${escapeHtml(student.firstName)} ${escapeHtml(student.lastName)}</h5>
+                        <h5 class="fw-bold mb-2 display-font">${escapeHtml(student.firstName)} ${escapeHtml(student.lastName)}</h5>
                         <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
-                            <span class="text-muted small">📞 ${escapeHtml(student.phone)}</span>
-                            <a href="tel:${cleanPhone}" class="btn btn-sm btn-success rounded-pill px-3 py-1 shadow-sm fw-bold border-0" style="font-size:0.8rem; line-height: 1.6;">📲 Tel qilish</a>
+                            <span class="text-muted small"><i class="fas fa-phone me-1"></i> ${escapeHtml(student.phone)}</span>
+                            <a href="tel:${cleanPhone}" class="btn btn-sm btn-success rounded-pill px-3 py-1 shadow-sm fw-bold border-0" style="font-size:0.8rem; line-height: 1.6;"><i class="fas fa-paper-plane me-1"></i> Tel qilish</a>
                         </div>
-                        <p class="mb-2 text-dark small">📝 ${escapeHtml(student.notes || "Izoh yo'q")}</p>
+                        <p class="mb-2 text-dark small"><i class="fas fa-sticky-note me-1 text-muted"></i> ${escapeHtml(student.notes || "Izoh yo'q")}</p>
                         ${lastFeedbackHtml}
                         <div class="d-flex flex-wrap gap-1 mt-2">${tags}</div>
                         ${problemHtml}
                     </div>
                     <div class="d-flex flex-row flex-md-column gap-2 align-items-md-end justify-content-end">
-                        <button class="btn btn-primary btn-sm flex-grow-1 flex-md-grow-0 fw-bold px-4" onclick="markCalled('${student.id}')">📞 Qo'ng'iroq qayd etish</button>
+                        <button class="btn btn-primary btn-sm flex-grow-1 flex-md-grow-0 fw-bold px-4" onclick="markCalled('${student.id}')"><i class="fas fa-phone-alt me-1"></i> Qo'ng'iroq qayd etish</button>
                         <div class="d-flex gap-2 w-100 justify-content-end">
-                            <button class="btn btn-secondary btn-sm flex-grow-1" onclick="openEditStudentModal('${student.id}')" title="Tahrirlash">✏️</button>
-                            <button class="btn btn-danger btn-sm flex-grow-1" onclick="deleteStudent('${student.id}')" title="O'chirish">🗑️</button>
+                            <button class="btn btn-outline-secondary btn-sm flex-grow-1" onclick="openEditStudentModal('${student.id}')" title="Tahrirlash"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-outline-danger btn-sm flex-grow-1" onclick="deleteStudent('${student.id}')" title="O'chirish"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </div>
@@ -652,20 +652,20 @@ window.openHistoryModal = () => {
 
             const d = new Date(dateRaw);
             const niceDate = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()} — <b>${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}</b>`;
-            historyHtml += `<li style="margin-bottom: 0.4rem; border-bottom: 1px dashed #e2e8f0; padding-bottom: 0.4rem;">🕰 ${niceDate}${reasonStr}</li>`;
+            historyHtml += `<li style="margin-bottom: 0.4rem; border-bottom: 1px dashed #e2e8f0; padding-bottom: 0.4rem;"><i class="fas fa-clock text-muted me-1"></i> ${niceDate}${reasonStr}</li>`;
         });
 
         let cleanPhone = s.phone.replace(/[^0-9+]/g, '');
 
         htmlContent += `
-            <div class="card mb-3 shadow-sm border-0">
+            <div class="card mb-3 glass-card border-0 shadow-sm animate-in">
                 <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <b class="fs-6 text-primary">👤 ${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b>
+                        <b class="fs-6 text-primary display-font"><i class="fas fa-user-circle me-1"></i> ${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b>
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <span class="text-muted small">📞 ${escapeHtml(s.phone)}</span>
-                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;">📲 Tel qilish</a>
+                        <span class="text-muted small"><i class="fas fa-phone-alt me-1"></i> ${escapeHtml(s.phone)}</span>
+                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-paper-plane"></i> Tel</a>
                     </div>
                     <ul class="list-unstyled mb-0 small text-muted">
                         ${historyHtml}
@@ -692,12 +692,12 @@ window.openClassManager = () => {
     sortedClasses.forEach(cls => {
         const safeCls = escapeHtml(cls);
         html += `
-        <div class="card mb-2 shadow-sm border-0">
+        <div class="card mb-2 glass-card border-0 shadow-sm">
             <div class="card-body p-3 d-flex justify-content-between align-items-center">
-                <b class="fs-6">${safeCls}</b>
+                <b class="fs-6 display-font"><i class="fas fa-layer-group me-2 text-primary"></i>${safeCls}</b>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-secondary" onclick="renameClass('${cls.replace(/'/g, "\\'")}')" title="O'zgartirish">✏️</button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="removeClass('${cls.replace(/'/g, "\\'")}')" title="O'chirish">🗑️</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="renameClass('${cls.replace(/'/g, "\\'")}')" title="O'zgartirish"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="removeClass('${cls.replace(/'/g, "\\'")}')" title="O'chirish"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         </div>`;
@@ -824,11 +824,12 @@ window.renderMostCalledClasses = () => {
         let problemCount = classStudents.filter(s => getStudentCallCount(s) >= 3).length;
 
         html += `
-        <div class="card mb-2 shadow-sm border-0 bg-light" style="cursor: pointer; transition: background 0.2s;" onclick="showMostCalledStudents('${cls.replace(/'/g, "\\'")}')">
+        html += `
+        <div class="card mb-2 glass-card border-0 shadow-sm" style="cursor: pointer;" onclick="showMostCalledStudents('${cls.replace(/'/g, "\\'")}')">
             <div class="card-body d-flex justify-content-between align-items-center p-3">
-                <b style="font-size: 1.05rem;" class="text-primary">🏫 ${escapeHtml(cls)}</b>
+                <b style="font-size: 1.05rem;" class="text-primary display-font"><i class="fas fa-school me-2"></i> ${escapeHtml(cls)}</b>
                 <span class="badge ${problemCount > 0 ? 'bg-danger' : 'bg-secondary'} rounded-pill px-3 py-2" style="font-size: 0.85rem;">
-                    ${problemCount} ta
+                    <i class="fas fa-exclamation-triangle me-1"></i> ${problemCount} ta
                 </span>
             </div>
         </div>`;
@@ -859,17 +860,17 @@ window.showMostCalledStudents = (clsName) => {
             const calls = getStudentCallCount(s);
                 let cleanPhone = s.phone.replace(/[^0-9+]/g, '');
             html += `
-            <div class="card mb-2 border-danger border-2 shadow-sm">
+            <div class="card mb-2 border-danger border-2 shadow-sm glass-card">
                 <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <b class="fs-6">${ix + 1}. 👤 ${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b>
-                        <span class="badge bg-danger rounded-pill px-2 py-1">📞 ${calls} marta</span>
+                        <b class="fs-6 display-font">${ix + 1}. <i class="fas fa-user me-1 text-primary"></i> ${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b>
+                        <span class="badge bg-danger rounded-pill px-2 py-1"><i class="fas fa-phone-alt me-1"></i> ${calls} marta</span>
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="text-muted small">📞 ${escapeHtml(s.phone)}</span>
-                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;">📲 Tel qilish</a>
+                        <span class="text-muted small"><i class="fas fa-mobile-alt me-1"></i> ${escapeHtml(s.phone)}</span>
+                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-paper-plane"></i> Tel</a>
                     </div>
-                    <div class="text-muted small"><i>Izoh:</i> ${escapeHtml(s.notes || "Yo'q")}</div>
+                    <div class="text-muted small"><i><i class="fas fa-info-circle me-1"></i> Izoh:</i> ${escapeHtml(s.notes || "Yo'q")}</div>
                 </div>
             </div>`;
         });
@@ -939,8 +940,8 @@ window.renderUrgentBadges = () => {
 
     if (urgents.length > 0) {
         urgentBadges.innerHTML = urgents.map(u => `
-            <div class="badge bg-danger rounded-pill d-flex align-items-center gap-2 p-2 px-3 shadow-sm" style="font-size: 0.9rem;">
-                🚨 ${escapeHtml(u.firstName)} ${escapeHtml(u.lastName)}
+            <div class="badge bg-danger rounded-pill d-flex align-items-center gap-2 p-2 px-3 shadow-sm animate-in" style="font-size: 0.9rem;">
+                <i class="fas fa-bolt"></i> ${escapeHtml(u.firstName)} ${escapeHtml(u.lastName)}
                 <button onclick="resolveUrgent('${u.id}')" class="btn-close btn-close-white" style="font-size: 0.6rem;" title="Bekor qilish"></button>
             </div>
         `).join('');
@@ -1126,15 +1127,15 @@ function renderAdminUsers() {
     }
 
     listEl.innerHTML = adminUsersList.map((u, i) => `
-        <div class="card shadow-sm border-0 bg-light" style="animation: heroEnter ${0.3 + (i * 0.1)}s ease-out forwards; opacity: 0;">
+        <div class="card shadow-sm border-0 glass-card animate-in stagger-${(i % 3) + 1}">
             <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
-                    <h5 class="fw-bold text-primary mb-1">👤 Login: ${escapeHtml(u.login)}</h5>
-                    <p class="text-muted mb-0">🔑 Parol: ${escapeHtml(u.password)}</p>
+                    <h5 class="fw-bold text-primary mb-1 display-font"><i class="fas fa-user-shield me-2"></i> ${escapeHtml(u.login)}</h5>
+                    <p class="text-muted mb-0"><i class="fas fa-key me-2"></i> Parol: ${escapeHtml(u.password)}</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-warning fw-bold text-dark w-100" onclick="viewAsTeacher('${u.login}')">👁 Kirish</button>
-                    <button class="btn btn-outline-danger w-100" onclick="deleteTeacher('${u.login}')" title="O'chirish">🗑️</button>
+                    <button class="btn btn-warning fw-bold text-dark w-100" onclick="viewAsTeacher('${u.login}')"><i class="fas fa-eye me-1"></i> Kirish</button>
+                    <button class="btn btn-outline-danger w-100" onclick="deleteTeacher('${u.login}')" title="O'chirish"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
