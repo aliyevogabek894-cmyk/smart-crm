@@ -51,6 +51,31 @@ body {
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
+/* Premium Core Colors Override for Badges/Backgrounds */
+.bg-primary {
+    background: linear-gradient(135deg, #4338ca 0%, #3b82f6 100%) !important;
+}
+.bg-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #fff !important;
+}
+.bg-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #fff !important;
+}
+.bg-info {
+    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%) !important;
+    color: #fff !important;
+}
+.bg-warning {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+    color: #000 !important;
+}
+.bg-secondary {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important;
+    color: #fff !important;
+}
+
 [data-bs-theme="dark"] body {
     /* Premium Slate Dark Mode Gradient */
     background: linear-gradient(135deg, #0f172a 0%, #171738 100%) no-repeat fixed;
