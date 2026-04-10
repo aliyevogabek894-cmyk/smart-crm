@@ -54,6 +54,19 @@ body {
 [data-bs-theme="dark"] body {
     /* Premium Slate Dark Mode Gradient */
     background: linear-gradient(135deg, #0f172a 0%, #171738 100%) no-repeat fixed;
+    color: #ffffff !important;
+}
+[data-bs-theme="dark"] {
+    --text-main: #ffffff;
+    --bs-body-color: #ffffff;
+    --bs-heading-color: #ffffff;
+}
+[data-bs-theme="dark"] h1, [data-bs-theme="dark"] h2, [data-bs-theme="dark"] h3, [data-bs-theme="dark"] h4, [data-bs-theme="dark"] h5, [data-bs-theme="dark"] h6,
+[data-bs-theme="dark"] .text-dark, [data-bs-theme="dark"] .text-body {
+    color: #ffffff !important;
+}
+[data-bs-theme="dark"] .text-muted {
+    color: #cbd5e1 !important;
 }
 
 [data-bs-theme="dark"] .custom-modal-content {
