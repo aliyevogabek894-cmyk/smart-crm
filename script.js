@@ -159,6 +159,8 @@ let classes = [];
 let currentClassFilter = 'all';
 let isSaving = false;
 let dataLoaded = false;
+let userProfile = { name: '', subject: '', avatar: '' };
+let pendingAvatarData = null;
 
 // ─── Sync Indicator ───
 const syncIndicator = document.getElementById('syncIndicator');
@@ -191,6 +193,9 @@ async function loadData() {
             const data = docSnap.data();
             students = data.students || [];
             classes = data.classes || [];
+            userProfile = data.profile || { name: currentUserDoc, subject: 'Mutaxassislik kiritilmagan', avatar: '' };
+        } else {
+            userProfile = { name: currentUserDoc, subject: 'Mutaxassislik kiritilmagan', avatar: '' };
         }
 
         // Migrate: agar class bo'sh bo'lsa, studentlardan olish
@@ -203,6 +208,7 @@ async function loadData() {
         dataLoaded = true;
         renderClassOptions();
         renderUrgentBadges();
+        renderProfileDisplay();
         render();
     } catch (e) {
         console.error("Firebase'dan o'qishda xatolik:", e);
@@ -222,10 +228,14 @@ async function loadData() {
             const data = doc.data();
             students = data.students || [];
             classes = data.classes || [];
+            if (data.profile) {
+                userProfile = data.profile;
+            }
 
             if (dataLoaded) {
                 renderClassOptions();
                 renderUrgentBadges();
+                renderProfileDisplay();
                 render();
                 showSyncStatus('saved', '✅ Yangilandi');
             }
@@ -244,6 +254,7 @@ async function saveStudentsToFirebase() {
         await db.collection("crmData").doc(currentUserDoc).set({
             students: students,
             classes: classes,
+            profile: userProfile,
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
         });
         showSyncStatus('saved', '✅ Saqlandi');
@@ -1185,6 +1196,100 @@ window.viewAsTeacher = (login) => {
     sessionStorage.setItem('viewing_as_admin', 'true');
     location.reload();
 };
+
+// ─── Profile Logic ───
+window.renderProfileDisplay = () => {
+    const nameEl = document.getElementById('navProfileName');
+    const subjEl = document.getElementById('navProfileSubject');
+    const imgEl = document.getElementById('navAvatarImage');
+
+    if (nameEl) nameEl.innerText = userProfile.name || currentUserDoc;
+    if (subjEl) subjEl.innerText = userProfile.subject || 'Mutaxassislik kiritilmagan';
+    if (imgEl && userProfile.avatar) {
+        imgEl.src = userProfile.avatar;
+    }
+};
+
+window.openProfileModal = () => {
+    document.getElementById('profileNameInput').value = userProfile.name || currentUserDoc;
+    document.getElementById('profileSubjectInput').value = userProfile.subject || '';
+    if (userProfile.avatar) {
+        document.getElementById('profilePreviewImg').src = userProfile.avatar;
+    }
+    pendingAvatarData = null;
+    document.getElementById('profileEditModal').classList.add('active');
+};
+
+window.closeProfileModal = () => {
+    document.getElementById('profileEditModal').classList.remove('active');
+};
+
+window.handleProfileImageSelect = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_SIZE = 250;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > MAX_SIZE) {
+                    height *= MAX_SIZE / width;
+                    width = MAX_SIZE;
+                }
+            } else {
+                if (height > MAX_SIZE) {
+                    width *= MAX_SIZE / height;
+                    height = MAX_SIZE;
+                }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Compress as JPEG 80% quality
+            pendingAvatarData = canvas.toDataURL('image/jpeg', 0.8);
+            document.getElementById('profilePreviewImg').src = pendingAvatarData;
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+};
+
+const profileEditForm = document.getElementById('profileEditForm');
+if (profileEditForm) {
+    profileEditForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = profileEditForm.querySelector('button');
+        const oldText = btn.innerText;
+        btn.innerText = "Saqlanmoqda...";
+        btn.disabled = true;
+
+        userProfile.name = document.getElementById('profileNameInput').value.trim();
+        userProfile.subject = document.getElementById('profileSubjectInput').value.trim();
+        if (pendingAvatarData) {
+            userProfile.avatar = pendingAvatarData;
+        }
+
+        try {
+            await saveStudentsToFirebase();
+            renderProfileDisplay();
+            closeProfileModal();
+        } catch(err) {
+            alert("Xatolik yuz berdi!");
+        } finally {
+            btn.innerText = oldText;
+            btn.disabled = false;
+        }
+    });
+}
 
 // ─── Start Application ───
 initializeApp();
