@@ -824,7 +824,6 @@ window.renderMostCalledClasses = () => {
         let problemCount = classStudents.filter(s => getStudentCallCount(s) >= 3).length;
 
         html += `
-        html += `
         <div class="card mb-2 glass-card border-0 shadow-sm" style="cursor: pointer;" onclick="showMostCalledStudents('${cls.replace(/'/g, "\\'")}')">
             <div class="card-body d-flex justify-content-between align-items-center p-3">
                 <b style="font-size: 1.05rem;" class="text-primary display-font"><i class="fas fa-school me-2"></i> ${escapeHtml(cls)}</b>
