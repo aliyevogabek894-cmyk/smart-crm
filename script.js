@@ -400,7 +400,7 @@ function render() {
                     <h3>${escapeHtml(student.firstName)} ${escapeHtml(student.lastName)}</h3>
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap;">
                         <span style="font-size: 0.88rem; color: var(--text-muted);">📞 ${escapeHtml(student.phone)}</span>
-                        <a href="tel:${cleanPhone}" class="tel-link-btn">📲 Tel</a>
+                        <a href="tel:${cleanPhone}" class="tel-link-btn">📲 Tel qilish</a>
                     </div>
                     <p>📝 ${escapeHtml(student.notes || "Izoh yo'q")}</p>
                     ${lastFeedbackHtml}
@@ -608,11 +608,16 @@ window.openHistoryModal = () => {
             historyHtml += `<li style="margin-bottom: 0.4rem; border-bottom: 1px dashed #e2e8f0; padding-bottom: 0.4rem;">🕰 ${niceDate}${reasonStr}</li>`;
         });
 
+        let cleanPhone = s.phone.replace(/[^0-9+]/g, '');
+
         htmlContent += `
             <div class="history-item" style="flex-direction: column; align-items: flex-start; margin-bottom: 0.8rem;">
-                <div style="margin-bottom: 0.6rem;">
+                <div style="margin-bottom: 0.6rem; width: 100%;">
                     <b style="font-size: 1.05rem; color: var(--primary);">👤 ${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</b>
-                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.15rem;">📞 ${escapeHtml(s.phone)}</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">📞 ${escapeHtml(s.phone)}</span>
+                        <a href="tel:${cleanPhone}" class="tel-link-btn" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">📲 Tel qilish</a>
+                    </div>
                 </div>
                 <ul style="list-style: none; padding-left: 0; width: 100%; color: var(--text-muted); font-size: 0.9rem;">
                     ${historyHtml}
