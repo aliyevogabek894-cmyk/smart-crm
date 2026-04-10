@@ -5,329 +5,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <meta name="description" content="Ustoz Aliyev - O'quvchi Nazorat Tizimi. O'qituvchilar uchun aqlli CRM va o'quvchilar nazorati dasturi.">
-    <meta name="keywords" content="Ustoz Aliyev, Aliyev Ogabek, Smart Nazorat, CRM, O'quvchi nazorati, o'qituvchi yordamchisi">
-    <meta name="author" content="Ustoz Aliyev">
+    <meta name="description" content="Ustoz Aliyev - O'quvchi Nazorat Tizimi. O'qituvchilar uchun aqlli CRM var o'quvchilar nazorati dasturi.">
     <title>Ustoz Aliyev - O'quvchi Nazorat Tizimi</title>
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://aliyevogabek894-cmyk.github.io/smart-crm/">
-    <meta property="og:title" content="Ustoz Aliyev - O'quvchi Nazorat Tizimi">
-    <meta property="og:description" content="O'qituvchilar uchun aqlli CRM va o'quvchilar nazorati dasturi. Barcha o'quvchilar nazorati bir joyda!">
-    <meta property="og:image" content="https://aliyevogabek894-cmyk.github.io/smart-crm/ustoz_rasmi.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://aliyevogabek894-cmyk.github.io/smart-crm/">
-    <meta property="twitter:title" content="Ustoz Aliyev - O'quvchi Nazorat Tizimi">
-    <meta property="twitter:description" content="O'qituvchilar uchun aqlli CRM va o'quvchilar nazorati dasturi.">
-    <meta property="twitter:image" content="https://aliyevogabek894-cmyk.github.io/smart-crm/ustoz_rasmi.jpg">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Ustoz Aliyev CRM",
-      "operatingSystem": "Web",
-      "applicationCategory": "EducationalApplication",
-      "description": "O'quvchi nazorat tizimi va o'qituvchi yordamchisi.",
-      "author": {
-        "@type": "Person",
-        "name": "Ustoz Aliyev"
-      }
-    }
-    </script>
-
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=24">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css?v=25">
 </head>
 
 <body>
-    <!-- Animated Background Orbs -->
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
 
     <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-card glass-panel">
-            <img src="ustoz_rasmi.jpg" alt="Ustoz Avatar" class="login-avatar">
-            <h2>Hush kelibsiz!</h2>
-            <p style="margin-bottom: 1.2rem; color: var(--text-muted);">Tizimga kirish uchun parolni kiriting</p>
+    <div id="loginScreen" class="login-container bg-light">
+        <div class="card p-4 text-center shadow" style="max-width: 400px; width: 100%; border-radius: 20px;">
+            <img src="ustoz_rasmi.jpg" alt="Ustoz Avatar" class="login-avatar mx-auto d-block">
+            <h3 class="mb-2 fw-bold">Xush kelibsiz!</h3>
+            <p class="text-muted mb-4">Tizimga kirish uchun malumotlarni kiriting</p>
             <form id="loginForm">
-                <input type="text" id="loginInput" placeholder="Login (Masalan: admin)" required
-                    style="text-align: center; font-size: 1.1rem; padding: 1rem; margin-bottom: 0.5rem; width: 100%;">
-                <input type="password" id="passwordInput" placeholder="Maxfiy parol..." required
-                    style="text-align: center; font-size: 1.1rem; padding: 1rem; width: 100%;">
-                <div id="loginError"
-                    style="color: var(--danger); font-size: 0.9rem; margin-top: 0.3rem; display: none; font-weight: 600;">
+                <input type="text" id="loginInput" class="form-control mb-3 text-center" placeholder="Login (Masalan: admin)" required>
+                <input type="password" id="passwordInput" class="form-control mb-3 text-center" placeholder="Maxfiy parol..." required>
+                <div id="loginError" class="text-danger fw-bold mb-3" style="display: none;">
                     Login yoki parol xato! Qayta urinib ko'ring.
                 </div>
-                <button type="submit" class="primary-btn" style="width: 100%; margin-top: 1rem;">Davom etish 👉</button>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Davom etish 👉</button>
             </form>
         </div>
     </div>
 
     <!-- Admin Container -->
     <div class="app-container" id="adminContainer" style="display: none;">
-        <header>
-            <img src="favicon.png" alt="Ustoz Aliyev Logo" style="width: 150px; height: 150px; border-radius: 24px; margin-bottom: 1.5rem; box-shadow: 0 10px 30px var(--primary-glow); animation: heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-            <h1>👑 Boshqaruv Paneli</h1>
-            <p>Admin tizimiga xush kelibsiz!</p>
-            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
-                <button class="primary-btn" style="background: var(--success); box-shadow: 0 4px 0 #047857;" onclick="viewAsTeacher('main')">🏫 Mening O'quvchilarim (Asosiy)</button>
-                <button class="primary-btn" style="background: var(--danger); box-shadow: 0 4px 0 #b91c1c;" onclick="logout()">Chiqish 🚪</button>
+        <header class="text-center mb-5 hero-logo">
+            <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-4 mb-3 shadow" style="width: 150px; height: 150px;">
+            <h1 class="fw-bold text-primary">👑 Boshqaruv Paneli</h1>
+            <p class="fs-5 text-muted">Admin tizimiga xush kelibsiz!</p>
+            <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+                <button class="btn btn-success fw-bold" onclick="viewAsTeacher('main')">🏫 Mening O'quvchilarim (Asosiy)</button>
+                <button class="btn btn-danger fw-bold" onclick="logout()">Chiqish 🚪</button>
             </div>
         </header>
 
-        <main>
+        <main class="row g-4">
             <!-- Add New Teacher -->
-            <section class="form-section glass-panel stagger-item" style="animation-delay: 0.1s;">
-                <h2>Yangi o'qituvchi qo'shish</h2>
-                <form id="addTeacherForm">
-                    <div class="input-group">
-                        <input type="text" id="newTeacherLogin" placeholder="Yangi login (inglizcha, probelsiz)" required>
-                        <input type="text" id="newTeacherPassword" placeholder="Parol" required>
-                    </div>
-                    <button type="submit" class="primary-btn">➕ O'qituvchi Qoshish</button>
-                </form>
-            </section>
+            <div class="col-md-5">
+                <div class="card h-100 p-4">
+                    <h4 class="mb-4 fw-bold">Yangi o'qituvchi qo'shish</h4>
+                    <form id="addTeacherForm">
+                        <div class="mb-3">
+                            <input type="text" id="newTeacherLogin" class="form-control" placeholder="Yangi login (probelsiz)" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="newTeacherPassword" class="form-control" placeholder="Parol" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">➕ Qo'shish</button>
+                    </form>
+                </div>
+            </div>
 
             <!-- Teachers List -->
-            <section class="list-section glass-panel stagger-item" style="animation-delay: 0.2s;">
-                <h2>Tizimdagi O'qituvchilar</h2>
-                <div class="student-list" id="teachersList">
-                    <!-- O'qituvchilar bu yerga tushadi -->
+            <div class="col-md-7">
+                <div class="card h-100 p-4">
+                    <h4 class="mb-4 fw-bold">Tizimdagi O'qituvchilar</h4>
+                    <div id="teachersList" class="d-flex flex-column gap-3">
+                        <!-- Teachers rendered here -->
+                    </div>
                 </div>
-            </section>
+            </div>
         </main>
     </div>
 
     <!-- Main App Container -->
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
-        <header>
-            <img src="favicon.png" alt="Ustoz Aliyev Logo" style="width: 220px; height: 220px; border-radius: 28px; margin-bottom: 1.5rem; box-shadow: 0 10px 30px var(--primary-glow); animation: heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-            <h1>🎓 Ustoz Aliyev</h1>
-            <p>O'qituvchining aqlli yordamchisi</p>
-            <div id="currentUserDisplay" style="margin-top: 0.5rem; color: #6366f1; font-weight: 700; font-size: 1.1rem; background: #e0e7ff; display: inline-block; padding: 0.3rem 1rem; border-radius: 20px;">👤 Profil: <span id="currentUsernameSpan"></span></div>
-            <a href="https://t.me/alliyev_2225" target="_blank" class="telegram-link" style="display: block; width: max-content; margin: 0.8rem auto 0 auto;">
-                ✈️ Administratorga yozish
-            </a>
-            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-                <button id="adminReturnBtn" class="primary-btn" style="display: none; background: #f59e0b; box-shadow: 0 4px 0 #b45309; padding: 0.6rem 1.2rem; font-size: 1rem;" onclick="returnToAdminPanel()">⬅️ Adminga qaytish</button>
-                <button class="primary-btn" style="background: var(--danger); box-shadow: 0 4px 0 #b91c1c; padding: 0.6rem 1.2rem; font-size: 1rem;" onclick="logout()">Chiqish 🚪</button>
+        <header class="text-center mb-4 hero-logo">
+            <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-4 mb-3 shadow" style="width: 220px; height: 220px;">
+            <h1 class="fw-bold text-primary display-5">🎓 Ustoz Aliyev</h1>
+            <p class="fs-5 text-muted">O'qituvchining aqlli yordamchisi</p>
+            
+            <div id="currentUserDisplay" class="badge bg-primary fs-6 mb-3 px-3 py-2 rounded-pill">
+                👤 Profil: <span id="currentUsernameSpan"></span>
             </div>
-            <div class="header-actions">
-                <button class="primary-btn" style="width: 250px; padding: 0.75rem;"
-                    onclick="openHistoryModal()">🕰 Umumiy Tarix</button>
-                <div style="display: flex; gap: 0.5rem; width: 250px;">
-                    <select id="mainClassFilter"
-                        style="flex: 1; padding: 0.75rem; border-radius: 50px; border: 2px solid var(--primary); font-size: 0.95rem; font-weight: 600; color: var(--primary); background: white; cursor: pointer; text-align: center;"
-                        onchange="setClassFilter(this.value)">
+            
+            <div class="mb-4">
+                <a href="https://t.me/alliyev_2225" target="_blank" class="btn btn-outline-primary rounded-pill px-4">
+                    ✈️ Administratorga yozish
+                </a>
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+                <button id="adminReturnBtn" class="btn btn-warning fw-bold text-dark" style="display: none;" onclick="returnToAdminPanel()">⬅️ Adminga qaytish</button>
+                <button class="btn btn-danger fw-bold" onclick="logout()">Chiqish 🚪</button>
+            </div>
+            
+            <div class="d-flex flex-column align-items-center gap-3">
+                <button class="btn btn-primary w-100 py-2 fw-bold" style="max-width: 300px;" onclick="openHistoryModal()">🕰 Umumiy Tarix</button>
+                <div class="d-flex w-100 gap-2" style="max-width: 300px;">
+                    <select id="mainClassFilter" class="form-select border-primary text-primary fw-bold text-center" onchange="setClassFilter(this.value)">
                     </select>
-                    <button class="primary-btn"
-                        style="padding: 0 1rem; background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 3px 0 #334155, 0 6px 12px rgba(0,0,0,0.15);"
-                        onclick="openClassManager()" title="Sinflarni sozlash">⚙️</button>
+                    <button class="btn btn-secondary px-3" onclick="openClassManager()" title="Sinflarni sozlash">⚙️</button>
                 </div>
             </div>
         </header>
 
         <!-- Stats Panel -->
-        <section class="stats-panel stagger-item" style="animation-delay: 0.3s;">
-            <div class="stat-card">
-                <div class="stat-icon">📞</div>
-                <div class="stat-info">
-                    <span class="stat-title">Bugun qo'ng'iroqlar</span>
-                    <h2 id="todayCallCount">0</h2>
+        <section class="row g-3 mb-4">
+            <div class="col-sm-6">
+                <div class="card pt-3 pb-3 px-4 d-flex flex-row align-items-center gap-3 h-100 shadow-sm border-0">
+                    <div class="fs-1 bg-primary bg-opacity-10 text-primary rounded p-2">📞</div>
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold" style="font-size: 0.85rem;">Bugun qo'ng'iroqlar</span>
+                        <h2 id="todayCallCount" class="mb-0 fw-bold">0</h2>
+                    </div>
                 </div>
             </div>
-            <div class="stat-card stat-alert" style="cursor: pointer;" onclick="openMostCalledModal()">
-                <div class="stat-icon">⚠️</div>
-                <div class="stat-info">
-                    <span class="stat-title">Muammoli o'quvchilar (3+ tel)</span>
-                    <h2 id="problematicStudentsCount">0 ta</h2>
+            <div class="col-sm-6">
+                <div class="card pt-3 pb-3 px-4 d-flex flex-row align-items-center gap-3 h-100 shadow-sm border-0" style="cursor: pointer; background-color: #fff3cd;" onclick="openMostCalledModal()">
+                    <div class="fs-1 bg-danger bg-opacity-10 text-danger rounded p-2">⚠️</div>
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold" style="font-size: 0.85rem; color: #856404 !important;">Muammoli (3+ tel)</span>
+                        <h2 id="problematicStudentsCount" class="mb-0 fw-bold text-danger">0 ta</h2>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Telegram Export Button -->
-        <button class="primary-btn telegram-export-btn stagger-item" style="animation-delay: 0.4s;"
-            onclick="openExportModal()">
+        <button class="btn btn-info text-white w-100 py-2 mb-4 fw-bold shadow-sm" onclick="openExportModal()">
             📲 Telegramga jo'natish va Hisobot yuklash
         </button>
 
-        <!-- Main Content -->
         <main>
             <!-- Drafts Section -->
-            <section class="draft-section glass-panel stagger-item" style="animation-delay: 0.5s; padding-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-                    <h2 style="color: var(--danger); margin: 0; font-size: 1.15rem;">📝 Dars Qoralamasi</h2>
-                </div>
-                <p style="color: var(--danger); font-size: 0.88rem; margin-bottom: 0.7rem; opacity: 0.8;">Darsda
-                    diqqatsizlik qilgan o'quvchi ismini tering.</p>
-                <div style="position: relative;">
-                    <input type="text" id="draftInput" placeholder="Ismni qidiring..."
-                        style="border-color: var(--danger); border-width: 2px;">
-                    <div id="draftSuggest"
-                        style="position: absolute; top: 100%; left: 0; width: 100%; background: white; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 12px; display: none; max-height: 200px; overflow-y: auto;">
+            <div class="card border-danger bg-danger bg-opacity-10 mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="text-danger fw-bold mb-2">📝 Dars Qoralamasi</h5>
+                    <p class="text-danger small mb-3">Darsda diqqatsizlik qilgan o'quvchi ismini tering.</p>
+                    <div class="position-relative">
+                        <input type="text" id="draftInput" class="form-control border-danger border-2" placeholder="Ismni qidiring...">
+                        <div id="draftSuggest" class="position-absolute w-100 bg-white shadow rounded mt-1 p-2" style="z-index: 100; display: none; max-height: 200px; overflow-y: auto;">
+                        </div>
                     </div>
+                    <div id="urgentBadges" class="d-flex flex-wrap gap-2 mt-3"></div>
                 </div>
-                <div id="urgentBadges" style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.8rem;"></div>
-            </section>
+            </div>
 
             <!-- Add Student Form -->
-            <section class="form-section glass-panel stagger-item" style="animation-delay: 0.6s;">
-                <h2>Yangi o'quvchi qo'shish</h2>
-                <form id="addStudentForm">
-                    <div class="input-group">
-                        <input type="text" id="firstName" placeholder="Ism" required>
-                        <input type="text" id="lastName" placeholder="Familiya" required>
-                    </div>
-                    <select id="classGroup" required></select>
-                    <input type="text" id="newClassInput" placeholder="Yangi sinf nomini kiriting (masalan: 11-A)"
-                        style="display: none;">
-                    <input type="tel" id="parentPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
-                    <textarea id="notes" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
-                    <button type="submit" class="primary-btn">➕ Qo'shish</button>
-                </form>
-            </section>
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Yangi o'quvchi qo'shish</h5>
+                    <form id="addStudentForm" class="row g-3">
+                        <div class="col-sm-6">
+                            <input type="text" id="firstName" class="form-control" placeholder="Ism" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" id="lastName" class="form-control" placeholder="Familiya" required>
+                        </div>
+                        <div class="col-12">
+                            <select id="classGroup" class="form-select" required></select>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" id="newClassInput" class="form-control" placeholder="Yangi sinf nomini kiriting (masalan: 11-A)" style="display: none;">
+                        </div>
+                        <div class="col-12">
+                            <input type="tel" id="parentPhone" class="form-control" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
+                        </div>
+                        <div class="col-12">
+                            <textarea id="notes" class="form-control" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100 fw-bold">➕ Qo'shish</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- Search and Student List -->
-            <section class="list-section glass-panel stagger-item" style="animation-delay: 0.7s;">
-                <div class="list-header" style="flex-direction: column; align-items: stretch; gap: 0.8rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 0.8rem;">
-                        <h2 style="margin: 0;">O'quvchilar ro'yxati</h2>
-                        <input type="text" id="searchInput" placeholder="🔍 Ism bo'yicha qidiruv...">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                        <h5 class="fw-bold mb-0">O'quvchilar ro'yxati</h5>
+                        <input type="text" id="searchInput" class="form-control rounded-pill" style="max-width: 300px;" placeholder="🔍 Ism bo'yicha qidiruv...">
                     </div>
+                    <div id="studentList" class="d-flex flex-column gap-3"></div>
                 </div>
-                <div class="student-list" id="studentList"></div>
-            </section>
+            </div>
         </main>
     </div>
 
     <!-- ═══════════ MODALS ═══════════ -->
 
-    <!-- Export Modal -->
-    <div id="exportModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close-btn" onclick="closeExportModal()">&times;</span>
-            <h2 style="font-size: 1.3rem; margin-bottom: 0.8rem;">📤 Hisobot olish</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">Formatni tanlang</p>
-            <div style="text-align: left; margin-bottom: 1rem;">
-                <label style="font-weight: 600; font-size: 0.88rem; display: block; margin-bottom: 0.3rem;">Qaysi sinf
-                    uchun?</label>
-                <select id="exportClassFilter"
-                    style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 2px solid #e2e8f0; font-size: 0.95rem;"></select>
+    <div id="exportModal" class="modal-overlay">
+        <div class="custom-modal-content text-center" style="max-width: 400px;">
+            <button class="close-btn-custom" onclick="closeExportModal()">&times;</button>
+            <h4 class="mb-2 fw-bold">📤 Hisobot olish</h4>
+            <p class="text-muted small mb-4">Formatni tanlang</p>
+            <div class="text-start mb-4">
+                <label class="fw-bold small mb-2">Qaysi sinf uchun?</label>
+                <select id="exportClassFilter" class="form-select"></select>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.7rem;">
-                <button class="primary-btn"
-                    style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 0 #047857, 0 8px 15px rgba(16,185,129,0.3);"
-                    onclick="exportToExcel()">📊 Excel fayl</button>
-                <button class="primary-btn"
-                    style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 4px 0 #1e3a8a, 0 8px 15px rgba(37,99,235,0.3);"
-                    onclick="exportToWord()">📝 Word fayl</button>
-                <button class="primary-btn"
-                    style="background: linear-gradient(135deg, #0088cc, #00aaff); box-shadow: 0 4px 0 #005f8f, 0 8px 15px rgba(0,136,204,0.3);"
-                    onclick="exportToTelegramText()">💬 Telegram xabar</button>
+            <div class="d-flex flex-column gap-2">
+                <button class="btn btn-success fw-bold" onclick="exportToExcel()">📊 Excel fayl</button>
+                <button class="btn btn-primary fw-bold" onclick="exportToWord()">📝 Word fayl</button>
+                <button class="btn btn-info text-white fw-bold" onclick="exportToTelegramText()">💬 Telegram xabar</button>
             </div>
         </div>
     </div>
 
-    <!-- Call Feedback Modal -->
-    <div id="callFeedbackModal" class="modal">
-        <div class="modal-content" style="max-width: 450px;">
-            <span class="close-btn" onclick="closeCallFeedbackModal()">&times;</span>
-            <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">📞 Qo'ng'iroq Tafsilotlari</h2>
-            <div style="margin-bottom: 1rem; text-align: left;">
-                <label style="font-weight: 600; font-size: 0.88rem; display: block; margin-bottom: 0.3rem;">1. Nimaga
-                    telefon qildingiz?</label>
-                <textarea id="callReasonInput" placeholder="Masalan: Dars qoldirgani uchun..."
-                    style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 2px solid #e2e8f0; font-size: 0.95rem; resize: vertical; min-height: 55px;"></textarea>
+    <div id="callFeedbackModal" class="modal-overlay">
+        <div class="custom-modal-content" style="max-width: 450px;">
+            <button class="close-btn-custom" onclick="closeCallFeedbackModal()">&times;</button>
+            <h4 class="mb-4 fw-bold">📞 Qo'ng'iroq Tafsilotlari</h4>
+            <div class="mb-3">
+                <label class="fw-bold small mb-2">1. Nimaga telefon qildingiz?</label>
+                <textarea id="callReasonInput" class="form-control" placeholder="Masalan: Dars qoldirgani uchun..." rows="2"></textarea>
             </div>
-            <div style="margin-bottom: 1.2rem; text-align: left;">
-                <label style="font-weight: 600; font-size: 0.88rem; display: block; margin-bottom: 0.3rem;">2.
-                    Ota-onaning fikri</label>
-                <textarea id="parentFeedbackInput" placeholder="Masalan: Ertaga jo'nataman dedi..."
-                    style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 2px solid #e2e8f0; font-size: 0.95rem; resize: vertical; min-height: 55px;"></textarea>
+            <div class="mb-4">
+                <label class="fw-bold small mb-2">2. Ota-onaning fikri</label>
+                <textarea id="parentFeedbackInput" class="form-control" placeholder="Masalan: Ertaga jo'nataman dedi..." rows="2"></textarea>
             </div>
-            <button class="primary-btn"
-                style="width: 100%; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 0 #047857, 0 8px 15px rgba(16,185,129,0.3);"
-                onclick="saveCallFeedback()">💾 Saqlash</button>
+            <button class="btn btn-success w-100 fw-bold" onclick="saveCallFeedback()">💾 Saqlash</button>
         </div>
     </div>
 
-    <!-- History Modal -->
-    <div id="historyModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeHistoryModal()">&times;</span>
-            <h2 style="font-size: 1.3rem;">🕰 Qo'ng'iroqlar Tarixi</h2>
-            <div id="historyList" class="history-list"></div>
+    <div id="historyModal" class="modal-overlay">
+        <div class="custom-modal-content">
+            <button class="close-btn-custom" onclick="closeHistoryModal()">&times;</button>
+            <h4 class="mb-4 fw-bold">🕰 Qo'ng'iroqlar Tarixi</h4>
+            <div id="historyList" class="d-flex flex-column gap-3"></div>
         </div>
     </div>
 
-    <!-- Class Manager Modal -->
-    <div id="classManageModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
-            <span class="close-btn" onclick="closeClassManager()">&times;</span>
-            <h2 style="font-size: 1.2rem;">⚙️ Sinflarni tahrirlash</h2>
-            <div id="classListContainer" class="history-list"></div>
+    <div id="classManageModal" class="modal-overlay">
+        <div class="custom-modal-content" style="max-width: 400px;">
+            <button class="close-btn-custom" onclick="closeClassManager()">&times;</button>
+            <h4 class="mb-4 fw-bold">⚙️ Sinflarni tahrirlash</h4>
+            <div id="classListContainer" class="d-flex flex-column gap-2"></div>
         </div>
     </div>
 
-    <!-- Edit Student Modal -->
-    <div id="editStudentModal" class="modal">
-        <div class="modal-content" style="max-width: 480px;">
-            <span class="close-btn" onclick="closeEditStudentModal()">&times;</span>
-            <h2 style="font-size: 1.2rem; margin-bottom: 0;">✏️ O'quvchini tahrirlash</h2>
-            <form id="editStudentForm" style="margin-top: 1rem;">
+    <div id="editStudentModal" class="modal-overlay">
+        <div class="custom-modal-content" style="max-width: 480px;">
+            <button class="close-btn-custom" onclick="closeEditStudentModal()">&times;</button>
+            <h4 class="mb-4 fw-bold">✏️ O'quvchini tahrirlash</h4>
+            <form id="editStudentForm" class="row g-3">
                 <input type="hidden" id="editStudentId">
-                <div class="input-group">
-                    <input type="text" id="editFirstName" placeholder="Ism" required>
-                    <input type="text" id="editLastName" placeholder="Familiya" required>
+                <div class="col-sm-6">
+                    <input type="text" id="editFirstName" class="form-control" placeholder="Ism" required>
                 </div>
-                <input type="tel" id="editPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
-                <textarea id="editNotes" placeholder="Izoh..." rows="2"></textarea>
-                <button type="submit" class="primary-btn">💾 Saqlash</button>
+                <div class="col-sm-6">
+                    <input type="text" id="editLastName" class="form-control" placeholder="Familiya" required>
+                </div>
+                <div class="col-12">
+                    <input type="tel" id="editPhone" class="form-control" placeholder="Ota-ona telefoni" required>
+                </div>
+                <div class="col-12">
+                    <textarea id="editNotes" class="form-control" placeholder="Izoh..." rows="2"></textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">💾 Saqlash</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Most Called Modal -->
-    <div id="mostCalledModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
-            <span class="close-btn" onclick="closeMostCalledModal()">&times;</span>
-            <h2 style="font-size: 1.2rem; margin-bottom: 0.8rem;">🔥 Eng ko'p qo'ng'iroq qilinganlar (3+ marta)</h2>
-            <div id="mostCalledContent" class="history-list" style="margin-top: 0.8rem;"></div>
-            <button id="mostCalledBackBtn" class="primary-btn"
-                style="display: none; width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 3px 0 #334155, 0 6px 12px rgba(0,0,0,0.15);"
-                onclick="renderMostCalledClasses()">⬅️ Sinflarga qaytish</button>
+    <div id="mostCalledModal" class="modal-overlay">
+        <div class="custom-modal-content" style="max-width: 500px;">
+            <button class="close-btn-custom" onclick="closeMostCalledModal()">&times;</button>
+            <h5 class="mb-4 fw-bold text-danger">🔥 Eng ko'p qo'ng'iroq qilinganlar (3+ marta)</h5>
+            <div id="mostCalledContent" class="d-flex flex-column gap-3"></div>
+            <button id="mostCalledBackBtn" class="btn btn-secondary w-100 mt-4 fw-bold" style="display: none;" onclick="renderMostCalledClasses()">⬅️ Sinflarga qaytish</button>
         </div>
     </div>
 
-    <!-- Sync Status Indicator -->
+    <!-- Sync and Loading -->
     <div id="syncIndicator" class="sync-indicator"></div>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loader-ring"></div>
-        <p>Ma'lumotlar serverdan olinmoqda...</p>
+    <div id="loadingOverlay" class="loading-overlay d-flex">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="fw-bold text-muted">Ma'lumotlar yuklanmoqda...</p>
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=24"></script>
+    <script src="script.js?v=25"></script>
 </body>
 
 </html>
