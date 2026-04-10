@@ -94,7 +94,7 @@
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
         <header class="mb-4">
-            <div class="row align-items-center bg-white p-3 p-md-4 rounded-4 shadow-sm border mx-0">
+            <div class="row align-items-center bg-body-tertiary p-3 p-md-4 rounded-4 shadow-sm border mx-0">
                 
                 <!-- Left: Logo & Title -->
                 <div class="col-md-4 d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start mb-3 mb-md-0">
@@ -109,10 +109,10 @@
                 <div class="col-md-8 d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-3">
                     
                     <!-- Profile Indicator -->
-                    <div class="d-flex align-items-center gap-2 p-2 bg-light rounded-pill border shadow-sm" style="cursor: pointer; transition: 0.2s;" onclick="openProfileModal()">
-                        <img id="navAvatarImage" src="favicon.png" alt="Avatar" class="rounded-circle object-fit-cover bg-white" style="width: 45px; height: 45px; border: 2px solid var(--bs-primary);">
+                    <div class="d-flex align-items-center gap-2 p-2 bg-body-tertiary rounded-pill border shadow-sm" style="cursor: pointer; transition: 0.2s;" onclick="openProfileModal()">
+                        <img id="navAvatarImage" src="favicon.png" alt="Avatar" class="rounded-circle object-fit-cover bg-body" style="width: 45px; height: 45px; border: 2px solid var(--bs-primary);">
                         <div class="text-start pe-3" style="line-height: 1.2;">
-                            <h6 id="navProfileName" class="mb-0 fw-bold text-dark" style="font-size: 0.9rem;">O'qituvchi</h6>
+                            <h6 id="navProfileName" class="mb-0 fw-bold text-body" style="font-size: 0.9rem;">O'qituvchi</h6>
                             <span id="navProfileSubject" class="text-primary" style="font-size: 0.7rem; font-weight: 600;">Mutaxassislik yo'q</span>
                         </div>
                     </div>
@@ -127,6 +127,7 @@
 
                     <!-- System Buttons -->
                     <div class="d-flex flex-wrap gap-2 justify-content-center mt-2 mt-md-0">
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold" onclick="toggleTheme()" id="themeToggleBtn" title="Tun/Kun rejimi">🌙 Tun</button>
                         <a href="https://t.me/alliyev_2225" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3" title="Administrator">💬 Adminga murojaat qilish</a>
                         <button id="adminReturnBtn" class="btn btn-warning btn-sm fw-bold text-dark rounded-pill px-3" style="display: none;" onclick="returnToAdminPanel()">⬅️ Ortga qaytish</button>
                         <button class="btn btn-danger btn-sm fw-bold rounded-pill px-3" onclick="logout()">🚪 Chiqish</button>

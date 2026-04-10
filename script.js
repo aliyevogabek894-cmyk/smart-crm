@@ -127,6 +127,38 @@ function returnToAdminPanel() {
 window.logout = logout;
 window.returnToAdminPanel = returnToAdminPanel;
 
+// ─── Tungi Rejim Boshqaruvi ───
+function initTheme() {
+    const savedTheme = localStorage.getItem('smart_theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    updateThemeBtn(savedTheme);
+}
+
+window.toggleTheme = () => {
+    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('smart_theme', newTheme);
+    updateThemeBtn(newTheme);
+};
+
+function updateThemeBtn(theme) {
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+        if (theme === 'dark') {
+            btn.innerHTML = '☀️ Kun';
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-outline-light');
+        } else {
+            btn.innerHTML = '🌙 Tun';
+            btn.classList.remove('btn-outline-light');
+            btn.classList.add('btn-outline-secondary');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initTheme);
+
 // ─── Eski localStorage ni bir marta tozalash ───
 localStorage.removeItem('smart_students');
 localStorage.removeItem('smart_classes');

@@ -10,10 +10,20 @@
 }
 
 body {
-    background-color: var(--bg-body);
-    color: var(--text-main);
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-bs-theme="dark"] .custom-modal-content {
+    background: #1e1e2d;
+    color: #e2e8f0;
+}
+[data-bs-theme="dark"] .close-btn-custom {
+    color: #94a3b8;
+}
+[data-bs-theme="dark"] .close-btn-custom:hover {
+    color: #f8fafc;
 }
 
 /* Base custom styles to complement Bootstrap */
@@ -58,6 +68,7 @@ body {
 }
 .custom-modal-content {
     background: white;
+    color: var(--text-main);
     width: 100%;
     max-width: 500px;
     max-height: 85vh;
