@@ -93,38 +93,46 @@
     <!-- Main App Container -->
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
-        <header class="text-center mb-4 hero-logo">
-            <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-4 mb-3 shadow" style="width: 220px; height: 220px;">
-            <h1 class="fw-bold text-primary display-5">🎓 Ustoz Aliyev</h1>
-            <p class="fs-5 text-muted">O'qituvchining aqlli yordamchisi</p>
-            
-            <!-- O'qituvchi Profil Ko'rsatkichi -->
-            <div class="d-flex align-items-center justify-content-center gap-3 mb-4 p-2 bg-light rounded-4 shadow-sm mx-auto border" style="max-width: 350px; cursor: pointer; transition: 0.2s;" onclick="openProfileModal()">
-                <img id="navAvatarImage" src="favicon.png" alt="Avatar" class="rounded-circle object-fit-cover shadow-sm bg-white" style="width: 55px; height: 55px; border: 3px solid var(--bs-primary);">
-                <div class="text-start" style="line-height: 1.2;">
-                    <h6 id="navProfileName" class="mb-1 fw-bold text-dark" style="font-size: 1rem;">O'qituvchi</h6>
-                    <span id="navProfileSubject" class="badge bg-primary-subtle text-primary border border-primary-subtle" style="font-size: 0.75rem;">Mutaxassislik kiritilmagan</span>
+        <header class="mb-4">
+            <div class="row align-items-center bg-white p-3 p-md-4 rounded-4 shadow-sm border mx-0">
+                
+                <!-- Left: Logo & Title -->
+                <div class="col-md-4 d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start mb-3 mb-md-0">
+                    <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                    <div>
+                        <h3 class="fw-bold text-primary mb-1">Ustoz Aliyev</h3>
+                        <p class="mb-0 text-muted" style="font-size: 0.85rem;">O'qituvchining aqlli yordamchisi</p>
+                    </div>
                 </div>
-                <div class="ms-auto pe-2 text-muted">⚙️</div>
-            </div>
-            <div class="mb-4">
-                <a href="https://t.me/alliyev_2225" target="_blank" class="btn btn-outline-primary rounded-pill px-4">
-                    ✈️ Administratorga yozish
-                </a>
-            </div>
 
-            <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
-                <button id="adminReturnBtn" class="btn btn-warning fw-bold text-dark" style="display: none;" onclick="returnToAdminPanel()">⬅️ Adminga qaytish</button>
-                <button class="btn btn-danger fw-bold" onclick="logout()">Chiqish 🚪</button>
-            </div>
-            
-            <div class="d-flex flex-column align-items-center gap-3">
-                <button class="btn btn-primary w-100 py-2 fw-bold" style="max-width: 300px;" onclick="openHistoryModal()">🕰 Umumiy Tarix</button>
-                <div class="d-flex w-100 gap-2" style="max-width: 300px;">
-                    <select id="mainClassFilter" class="form-select border-primary text-primary fw-bold text-center" onchange="setClassFilter(this.value)">
-                    </select>
-                    <button class="btn btn-secondary px-3" onclick="openClassManager()" title="Sinflarni sozlash">⚙️</button>
+                <!-- Center & Right: Profile, Actions & Controls -->
+                <div class="col-md-8 d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-3">
+                    
+                    <!-- Profile Indicator -->
+                    <div class="d-flex align-items-center gap-2 p-2 bg-light rounded-pill border shadow-sm" style="cursor: pointer; transition: 0.2s;" onclick="openProfileModal()">
+                        <img id="navAvatarImage" src="favicon.png" alt="Avatar" class="rounded-circle object-fit-cover bg-white" style="width: 45px; height: 45px; border: 2px solid var(--bs-primary);">
+                        <div class="text-start pe-3" style="line-height: 1.2;">
+                            <h6 id="navProfileName" class="mb-0 fw-bold text-dark" style="font-size: 0.9rem;">O'qituvchi</h6>
+                            <span id="navProfileSubject" class="text-primary" style="font-size: 0.7rem; font-weight: 600;">Mutaxassislik yo'q</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <button class="btn btn-primary btn-sm px-3 fw-bold rounded-pill" onclick="openHistoryModal()">🕰 Tarix</button>
+                        <select id="mainClassFilter" class="form-select form-select-sm border-primary text-primary fw-bold rounded-pill" style="width: auto; min-width: 110px;" onchange="setClassFilter(this.value)">
+                        </select>
+                        <button class="btn btn-secondary btn-sm rounded-pill px-3" onclick="openClassManager()" title="Sinflarni sozlash">🏫 Sinf sozlari</button>
+                    </div>
+
+                    <!-- System Buttons -->
+                    <div class="d-flex gap-2">
+                        <a href="https://t.me/alliyev_2225" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill" title="Administrator">💬 Admin</a>
+                        <button id="adminReturnBtn" class="btn btn-warning btn-sm fw-bold text-dark rounded-pill" style="display: none;" onclick="returnToAdminPanel()">⬅️ Qaytish</button>
+                        <button class="btn btn-danger btn-sm fw-bold rounded-pill" onclick="logout()" title="Chiqish">🚪</button>
+                    </div>
                 </div>
+
             </div>
         </header>
 
