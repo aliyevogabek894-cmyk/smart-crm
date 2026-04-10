@@ -7,6 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Smart CRM - Tizim Tozalash</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -57,25 +58,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔧 Smart CRM - Diagnostika</h1>
+        <h1><i class="fas fa-wrench me-2"></i> Smart CRM - Diagnostika</h1>
         
         <div class="status" id="step1">
-            <h3>1️⃣ localStorage holati</h3>
+            <h3><i class="fas fa-hdd me-2"></i> localStorage holati</h3>
             <div id="localStatus">Tekshirilmoqda...</div>
         </div>
 
         <div class="status" id="step2">
-            <h3>2️⃣ Firebase ma'lumotlari</h3>
+            <h3><i class="fas fa-database me-2"></i> Firebase ma'lumotlari</h3>
             <div id="firebaseStatus">Yuklanmoqda...</div>
         </div>
 
         <div class="status" id="step3">
-            <h3>3️⃣ Firebase'dagi sinflar va o'quvchilar</h3>
+            <h3><i class="fas fa-users me-2"></i> Firebase'dagi sinflar va o'quvchilar</h3>
             <div class="data-box" id="firebaseData">Kutilmoqda...</div>
         </div>
 
         <button class="danger" onclick="clearAndRedirect()">
-            🧹 Hammasini tozalab, saytga o'tish
+            <i class="fas fa-broom me-2"></i> Hammasini tozalab, saytga o'tish
         </button>
     </div>
 
@@ -105,13 +106,13 @@
             step1El.classList.add('err');
             const s = JSON.parse(localStudents || '[]');
             const c = JSON.parse(localClasses || '[]');
-            localStatusEl.innerHTML = `⚠️ <b>localStorage da eski ma'lumot bor!</b><br>
+            localStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle text-warning"></i> <b>localStorage da eski ma'lumot bor!</b><br>
                 O'quvchilar: ${s.length} ta<br>
                 Sinflar: ${c.join(', ') || 'yo\'q'}<br>
                 <br><b>Bu ma'lumot Firebase ustiga yozilishi mumkin edi!</b>`;
         } else {
             step1El.classList.add('ok');
-            localStatusEl.innerHTML = '✅ localStorage toza - muammo yo\'q';
+            localStatusEl.innerHTML = '<i class="fas fa-check-circle text-success"></i> localStorage toza - muammo yo\'q';
         }
 
         // Step 2 & 3: Check Firebase
@@ -126,27 +127,27 @@
                 const classes = data.classes || [];
                 
                 step2El.classList.add('ok');
-                firebaseStatusEl.innerHTML = `✅ Firebase'da ma'lumot bor!<br>
+                firebaseStatusEl.innerHTML = `<i class="fas fa-check-circle text-success"></i> Firebase'da ma'lumot bor!<br>
                     O'quvchilar: <b>${students.length}</b> ta<br>
                     Sinflar: <b>${classes.join(', ')}</b>`;
                 
                 let details = `<b>SINFLAR:</b> ${classes.join(', ')}\n\n`;
                 classes.forEach(cls => {
                     const clsStudents = students.filter(s => s.classGroup === cls);
-                    details += `\n<b>📚 ${cls} sinfi (${clsStudents.length} ta):</b>\n`;
+                    details += `\n<b><i class="fas fa-book"></i> ${cls} sinfi (${clsStudents.length} ta):</b>\n`;
                     clsStudents.forEach(s => {
-                        details += `  👤 ${s.firstName} ${s.lastName} - ${s.phone}\n`;
+                        details += `  <i class="fas fa-user"></i> ${s.firstName} ${s.lastName} - ${s.phone}\n`;
                     });
                 });
                 
                 firebaseDataEl.innerHTML = details.replace(/\n/g, '<br>');
             } else {
                 step2El.classList.add('err');
-                firebaseStatusEl.innerHTML = '❌ Firebase\'da hech narsa yo\'q!';
+                firebaseStatusEl.innerHTML = '<i class="fas fa-times-circle text-danger"></i> Firebase\'da hech narsa yo\'q!';
                 firebaseDataEl.innerHTML = 'Ma\'lumot topilmadi';
             }
         }).catch(e => {
-            document.getElementById('firebaseStatus').innerHTML = '❌ Xatolik: ' + e.message;
+            document.getElementById('firebaseStatus').innerHTML = '<i class="fas fa-times-circle text-danger"></i> Xatolik: ' + e.message;
         });
 
         // Clear everything and redirect

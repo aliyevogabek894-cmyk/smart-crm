@@ -13,7 +13,8 @@
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=20">
 </head>
 
@@ -47,14 +48,14 @@
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
         <header>
-            <h1>🎓 Ustoz Aliyev</h1>
+            <h1><i class="fas fa-graduation-cap text-primary me-2"></i> Ustoz Aliyev</h1>
             <p>O'qituvchining aqlli yordamchisi</p>
             <a href="https://t.me/alliyev_2225" target="_blank" class="telegram-link">
-                ✈️ Administratorga yozish
+                <i class="fab fa-telegram-plane me-1"></i> Administratorga yozish
             </a>
             <div class="header-actions">
                 <button class="primary-btn" style="width: 250px; padding: 0.75rem;"
-                    onclick="openHistoryModal()">🕰 Umumiy Tarix</button>
+                    onclick="openHistoryModal()"><i class="fas fa-history me-1"></i> Umumiy Tarix</button>
                 <div style="display: flex; gap: 0.5rem; width: 250px;">
                     <select id="mainClassFilter"
                         style="flex: 1; padding: 0.75rem; border-radius: 50px; border: 2px solid var(--primary); font-size: 0.95rem; font-weight: 600; color: var(--primary); background: white; cursor: pointer; text-align: center;"
@@ -62,7 +63,7 @@
                     </select>
                     <button class="primary-btn"
                         style="padding: 0 1rem; background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 3px 0 #334155, 0 6px 12px rgba(0,0,0,0.15);"
-                        onclick="openClassManager()" title="Sinflarni sozlash">⚙️</button>
+                        onclick="openClassManager()" title="Sinflarni sozlash"><i class="fas fa-cog"></i></button>
                 </div>
             </div>
         </header>
@@ -70,14 +71,14 @@
         <!-- Stats Panel -->
         <section class="stats-panel stagger-item" style="animation-delay: 0.3s;">
             <div class="stat-card">
-                <div class="stat-icon">📞</div>
+                <div class="stat-icon"><i class="fas fa-phone-alt"></i></div>
                 <div class="stat-info">
                     <span class="stat-title">Bugun qo'ng'iroqlar</span>
                     <h2 id="todayCallCount">0</h2>
                 </div>
             </div>
             <div class="stat-card stat-alert" style="cursor: pointer;" onclick="openMostCalledModal()">
-                <div class="stat-icon">⚠️</div>
+                <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <div class="stat-info">
                     <span class="stat-title">Eng e'tiborsiz o'quvchi</span>
                     <h2 id="mostIgnoredStudent">-</h2>
@@ -88,7 +89,7 @@
         <!-- Telegram Export Button -->
         <button class="primary-btn telegram-export-btn stagger-item" style="animation-delay: 0.4s;"
             onclick="openExportModal()">
-            📲 Telegramga jo'natish va Hisobot yuklash
+            <i class="fas fa-paper-plane me-2"></i> Telegramga jo'natish va Hisobot yuklash
         </button>
 
         <!-- Main Content -->
@@ -96,7 +97,7 @@
             <!-- Drafts Section -->
             <section class="draft-section glass-panel stagger-item" style="animation-delay: 0.5s; padding-bottom: 1.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-                    <h2 style="color: var(--danger); margin: 0; font-size: 1.15rem;">📝 Dars Qoralamasi</h2>
+                    <h2 style="color: var(--danger); margin: 0; font-size: 1.15rem;"><i class="fas fa-edit me-2"></i> Dars Qoralamasi</h2>
                 </div>
                 <p style="color: var(--danger); font-size: 0.88rem; margin-bottom: 0.7rem; opacity: 0.8;">Darsda
                     diqqatsizlik qilgan o'quvchi ismini tering.</p>
@@ -123,7 +124,7 @@
                         style="display: none;">
                     <input type="tel" id="parentPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
                     <textarea id="notes" placeholder="Izoh (masalan: dars qilmayapti, sust, a'lochi...)" rows="2"></textarea>
-                    <button type="submit" class="primary-btn">➕ Qo'shish</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-user-plus me-1"></i> Qo'shish</button>
                 </form>
             </section>
 
@@ -132,7 +133,7 @@
                 <div class="list-header" style="flex-direction: column; align-items: stretch; gap: 0.8rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 0.8rem;">
                         <h2 style="margin: 0;">O'quvchilar ro'yxati</h2>
-                        <input type="text" id="searchInput" placeholder="🔍 Ism bo'yicha qidiruv...">
+                        <input type="text" id="searchInput" placeholder="&quot; Ism bo'yicha qidiruv...">
                     </div>
                 </div>
                 <div class="student-list" id="studentList"></div>
@@ -146,7 +147,7 @@
     <div id="exportModal" class="modal">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
             <span class="close-btn" onclick="closeExportModal()">&times;</span>
-            <h2 style="font-size: 1.3rem; margin-bottom: 0.8rem;">📤 Hisobot olish</h2>
+            <h2 style="font-size: 1.3rem; margin-bottom: 0.8rem;"><i class="fas fa-file-export text-primary me-2"></i> Hisobot olish</h2>
             <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">Formatni tanlang</p>
             <div style="text-align: left; margin-bottom: 1rem;">
                 <label style="font-weight: 600; font-size: 0.88rem; display: block; margin-bottom: 0.3rem;">Qaysi sinf
@@ -157,22 +158,21 @@
             <div style="display: flex; flex-direction: column; gap: 0.7rem;">
                 <button class="primary-btn"
                     style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 0 #047857, 0 8px 15px rgba(16,185,129,0.3);"
-                    onclick="exportToExcel()">📊 Excel fayl</button>
+                    onclick="exportToExcel()"><i class="fas fa-file-excel me-1"></i> Excel fayl</button>
                 <button class="primary-btn"
                     style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 4px 0 #1e3a8a, 0 8px 15px rgba(37,99,235,0.3);"
-                    onclick="exportToWord()">📝 Word fayl</button>
+                    onclick="exportToWord()"><i class="fas fa-file-word me-1"></i> Word fayl</button>
                 <button class="primary-btn"
                     style="background: linear-gradient(135deg, #0088cc, #00aaff); box-shadow: 0 4px 0 #005f8f, 0 8px 15px rgba(0,136,204,0.3);"
-                    onclick="exportToTelegramText()">💬 Telegram xabar</button>
+                    onclick="exportToTelegramText()"><i class="fab fa-telegram-plane me-1"></i> Telegram xabar</button>
             </div>
         </div>
     </div>
 
-    <!-- Call Feedback Modal -->
     <div id="callFeedbackModal" class="modal">
         <div class="modal-content" style="max-width: 450px;">
             <span class="close-btn" onclick="closeCallFeedbackModal()">&times;</span>
-            <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">📞 Qo'ng'iroq Tafsilotlari</h2>
+            <h2 style="font-size: 1.3rem; margin-bottom: 1rem;"><i class="fas fa-phone-volume text-success me-2"></i> Qo'ng'iroq Tafsilotlari</h2>
             <div style="margin-bottom: 1rem; text-align: left;">
                 <label style="font-weight: 600; font-size: 0.88rem; display: block; margin-bottom: 0.3rem;">1. Nimaga
                     telefon qildingiz?</label>
@@ -187,7 +187,7 @@
             </div>
             <button class="primary-btn"
                 style="width: 100%; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 0 #047857, 0 8px 15px rgba(16,185,129,0.3);"
-                onclick="saveCallFeedback()">💾 Saqlash</button>
+                onclick="saveCallFeedback()"><i class="fas fa-save me-1"></i> Saqlash</button>
         </div>
     </div>
 
@@ -195,7 +195,7 @@
     <div id="historyModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeHistoryModal()">&times;</span>
-            <h2 style="font-size: 1.3rem;">🕰 Qo'ng'iroqlar Tarixi</h2>
+            <h2 style="font-size: 1.3rem;"><i class="fas fa-history text-primary me-2"></i> Qo'ng'iroqlar Tarixi</h2>
             <div id="historyList" class="history-list"></div>
         </div>
     </div>
@@ -204,7 +204,7 @@
     <div id="classManageModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
             <span class="close-btn" onclick="closeClassManager()">&times;</span>
-            <h2 style="font-size: 1.2rem;">⚙️ Sinflarni tahrirlash</h2>
+            <h2 style="font-size: 1.2rem;"><i class="fas fa-chalkboard text-primary me-2"></i> Sinflarni tahrirlash</h2>
             <div id="classListContainer" class="history-list"></div>
         </div>
     </div>
@@ -213,7 +213,7 @@
     <div id="editStudentModal" class="modal">
         <div class="modal-content" style="max-width: 480px;">
             <span class="close-btn" onclick="closeEditStudentModal()">&times;</span>
-            <h2 style="font-size: 1.2rem; margin-bottom: 0;">✏️ O'quvchini tahrirlash</h2>
+            <h2 style="font-size: 1.2rem; margin-bottom: 0;"><i class="fas fa-user-edit text-primary me-2"></i> O'quvchini tahrirlash</h2>
             <form id="editStudentForm" style="margin-top: 1rem;">
                 <input type="hidden" id="editStudentId">
                 <div class="input-group">
@@ -222,7 +222,7 @@
                 </div>
                 <input type="tel" id="editPhone" placeholder="Ota-ona telefoni (+998 90 123 45 67)" required>
                 <textarea id="editNotes" placeholder="Izoh..." rows="2"></textarea>
-                <button type="submit" class="primary-btn">💾 Saqlash</button>
+                <button type="submit" class="primary-btn"><i class="fas fa-save me-1"></i> Saqlash</button>
             </form>
         </div>
     </div>
@@ -231,11 +231,11 @@
     <div id="mostCalledModal" class="modal">
         <div class="modal-content" style="max-width: 500px;">
             <span class="close-btn" onclick="closeMostCalledModal()">&times;</span>
-            <h2 style="font-size: 1.2rem; margin-bottom: 0.8rem;">🔥 Eng ko'p qo'ng'iroq qilinganlar (3+ marta)</h2>
+            <h2 style="font-size: 1.2rem; margin-bottom: 0.8rem;"><i class="fas fa-fire text-danger me-2"></i> Eng ko'p qo'ng'iroq qilinganlar (3+)</h2>
             <div id="mostCalledContent" class="history-list" style="margin-top: 0.8rem;"></div>
             <button id="mostCalledBackBtn" class="primary-btn"
                 style="display: none; width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 3px 0 #334155, 0 6px 12px rgba(0,0,0,0.15);"
-                onclick="renderMostCalledClasses()">⬅️ Sinflarga qaytish</button>
+                onclick="renderMostCalledClasses()"><i class="fas fa-arrow-left me-1"></i> Sinflarga qaytish</button>
         </div>
     </div>
 
