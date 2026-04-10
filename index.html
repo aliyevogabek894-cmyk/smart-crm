@@ -63,15 +63,52 @@
             <h2>Hush kelibsiz!</h2>
             <p style="margin-bottom: 1.2rem; color: var(--text-muted);">Tizimga kirish uchun parolni kiriting</p>
             <form id="loginForm">
+                <input type="text" id="loginInput" placeholder="Login (Masalan: admin)" required
+                    style="text-align: center; font-size: 1.1rem; padding: 1rem; margin-bottom: 0.5rem; width: 100%;">
                 <input type="password" id="passwordInput" placeholder="Maxfiy parol..." required
-                    style="text-align: center; font-size: 1.1rem; padding: 1rem;">
+                    style="text-align: center; font-size: 1.1rem; padding: 1rem; width: 100%;">
                 <div id="loginError"
                     style="color: var(--danger); font-size: 0.9rem; margin-top: 0.3rem; display: none; font-weight: 600;">
-                    Parol tasdiqlanmadi! Qayta urinib ko'ring.
+                    Login yoki parol xato! Qayta urinib ko'ring.
                 </div>
-                <button type="submit" class="primary-btn" style="width: 100%; margin-top: 0.5rem;">Davom etish 👉</button>
+                <button type="submit" class="primary-btn" style="width: 100%; margin-top: 1rem;">Davom etish 👉</button>
             </form>
         </div>
+    </div>
+
+    <!-- Admin Container -->
+    <div class="app-container" id="adminContainer" style="display: none;">
+        <header>
+            <img src="favicon.png" alt="Ustoz Aliyev Logo" style="width: 150px; height: 150px; border-radius: 24px; margin-bottom: 1.5rem; box-shadow: 0 10px 30px var(--primary-glow); animation: heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <h1>👑 Boshqaruv Paneli</h1>
+            <p>Admin tizimiga xush kelibsiz!</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <button class="primary-btn" style="background: var(--success); box-shadow: 0 4px 0 #047857;" onclick="viewAsTeacher('main')">🏫 Mening O'quvchilarim (Asosiy)</button>
+                <button class="primary-btn" style="background: var(--danger); box-shadow: 0 4px 0 #b91c1c;" onclick="logout()">Chiqish 🚪</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Add New Teacher -->
+            <section class="form-section glass-panel stagger-item" style="animation-delay: 0.1s;">
+                <h2>Yangi o'qituvchi qo'shish</h2>
+                <form id="addTeacherForm">
+                    <div class="input-group">
+                        <input type="text" id="newTeacherLogin" placeholder="Yangi login (inglizcha, probelsiz)" required>
+                        <input type="text" id="newTeacherPassword" placeholder="Parol" required>
+                    </div>
+                    <button type="submit" class="primary-btn">➕ O'qituvchi Qoshish</button>
+                </form>
+            </section>
+
+            <!-- Teachers List -->
+            <section class="list-section glass-panel stagger-item" style="animation-delay: 0.2s;">
+                <h2>Tizimdagi O'qituvchilar</h2>
+                <div class="student-list" id="teachersList">
+                    <!-- O'qituvchilar bu yerga tushadi -->
+                </div>
+            </section>
+        </main>
     </div>
 
     <!-- Main App Container -->
@@ -81,9 +118,14 @@
             <img src="favicon.png" alt="Ustoz Aliyev Logo" style="width: 220px; height: 220px; border-radius: 28px; margin-bottom: 1.5rem; box-shadow: 0 10px 30px var(--primary-glow); animation: heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
             <h1>🎓 Ustoz Aliyev</h1>
             <p>O'qituvchining aqlli yordamchisi</p>
-            <a href="https://t.me/alliyev_2225" target="_blank" class="telegram-link">
+            <div id="currentUserDisplay" style="margin-top: 0.5rem; color: #6366f1; font-weight: 700; font-size: 1.1rem; background: #e0e7ff; display: inline-block; padding: 0.3rem 1rem; border-radius: 20px;">👤 Profil: <span id="currentUsernameSpan"></span></div>
+            <a href="https://t.me/alliyev_2225" target="_blank" class="telegram-link" style="display: block; width: max-content; margin: 0.8rem auto 0 auto;">
                 ✈️ Administratorga yozish
             </a>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                <button id="adminReturnBtn" class="primary-btn" style="display: none; background: #f59e0b; box-shadow: 0 4px 0 #b45309; padding: 0.6rem 1.2rem; font-size: 1rem;" onclick="returnToAdminPanel()">⬅️ Adminga qaytish</button>
+                <button class="primary-btn" style="background: var(--danger); box-shadow: 0 4px 0 #b91c1c; padding: 0.6rem 1.2rem; font-size: 1rem;" onclick="logout()">Chiqish 🚪</button>
+            </div>
             <div class="header-actions">
                 <button class="primary-btn" style="width: 250px; padding: 0.75rem;"
                     onclick="openHistoryModal()">🕰 Umumiy Tarix</button>

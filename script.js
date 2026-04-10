@@ -11,37 +11,121 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-// ─── Login Logic ───
-const MAXFIY_PAROL = '2225';
-
+// ─── DOM Elements ───
 const loginScreen = document.getElementById('loginScreen');
 const appContainer = document.getElementById('appContainer');
+const adminContainer = document.getElementById('adminContainer');
 const loginForm = document.getElementById('loginForm');
+const loginInput = document.getElementById('loginInput');
 const passwordInput = document.getElementById('passwordInput');
 const loginError = document.getElementById('loginError');
 
-if (sessionStorage.getItem('smart_logged_in') === 'true') {
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (appContainer) appContainer.style.display = 'block';
+// ─── Data Paths ───
+let currentUserDoc = "main";
+let currentSnapshotUnsubscribe = null;
+
+// ─── Login Logic ───
+async function initializeApp() {
+    const isAdmin = sessionStorage.getItem('is_admin') === 'true';
+    const loggedIn = sessionStorage.getItem('smart_logged_in') === 'true';
+    const username = sessionStorage.getItem('smart_username');
+
+    if (loggedIn && username) {
+        if (loginScreen) loginScreen.style.display = 'none';
+        
+        if (isAdmin && !sessionStorage.getItem('viewing_as_admin')) {
+            if (adminContainer) adminContainer.style.display = 'block';
+            if (appContainer) appContainer.style.display = 'none';
+            loadAdminUsers();
+        } else {
+            if (adminContainer) adminContainer.style.display = 'none';
+            if (appContainer) appContainer.style.display = 'block';
+            currentUserDoc = username;
+            
+            const nameSpan = document.getElementById('currentUsernameSpan');
+            if (nameSpan) nameSpan.innerText = username;
+
+            const retBtn = document.getElementById('adminReturnBtn');
+            if (retBtn) retBtn.style.display = isAdmin ? 'block' : 'none';
+            
+            loadData();
+        }
+    } else {
+        if (loginScreen) loginScreen.style.display = 'flex';
+    }
 }
 
 if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (passwordInput.value === MAXFIY_PAROL) {
+        const enteredLogin = loginInput ? loginInput.value.trim().toLowerCase() : '';
+        const enteredPass = passwordInput.value.trim();
+        
+        // Admin Master Check
+        if (enteredLogin === 'admin' && enteredPass === '2225') {
             sessionStorage.setItem('smart_logged_in', 'true');
+            sessionStorage.setItem('smart_username', 'admin');
+            sessionStorage.setItem('is_admin', 'true');
+            sessionStorage.removeItem('viewing_as_admin');
+            
             loginScreen.style.display = 'none';
-            appContainer.style.display = 'block';
-        } else {
-            loginError.style.display = 'block';
-            passwordInput.style.borderColor = 'var(--danger)';
-            setTimeout(() => {
-                loginError.style.display = 'none';
-                passwordInput.style.borderColor = '';
-            }, 3000);
+            adminContainer.style.display = 'block';
+            loadAdminUsers();
+            return;
+        }
+
+        // Tizimdan qidirish
+        const loadingBtn = loginForm.querySelector('button');
+        const oldText = loadingBtn.innerText;
+        loadingBtn.innerText = "Tekshirilmoqda...";
+        loadingBtn.disabled = true;
+
+        try {
+            const docRef = db.collection("crmSettings").doc("users");
+            const docSnap = await docRef.get();
+            let users = [];
+            if (docSnap.exists) {
+                users = docSnap.data().list || [];
+            }
+            
+            const user = users.find(u => u.login === enteredLogin && u.password === enteredPass);
+            if (user) {
+                sessionStorage.setItem('smart_logged_in', 'true');
+                sessionStorage.setItem('smart_username', user.login);
+                sessionStorage.setItem('is_admin', 'false');
+                sessionStorage.removeItem('viewing_as_admin');
+                
+                loginScreen.style.display = 'none';
+                appContainer.style.display = 'block';
+                currentUserDoc = user.login;
+                loadData();
+            } else {
+                loginError.style.display = 'block';
+                setTimeout(() => { loginError.style.display = 'none'; }, 3000);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Internet yoki baza xatoligi!");
+        } finally {
+            loadingBtn.innerText = oldText;
+            loadingBtn.disabled = false;
         }
     });
 }
+
+function logout() {
+    sessionStorage.clear();
+    location.reload();
+}
+
+function returnToAdminPanel() {
+    sessionStorage.removeItem('viewing_as_admin');
+    if(currentSnapshotUnsubscribe) currentSnapshotUnsubscribe();
+    location.reload();
+}
+
+window.logout = logout;
+window.returnToAdminPanel = returnToAdminPanel;
 
 // ─── Eski localStorage ni bir marta tozalash ───
 localStorage.removeItem('smart_students');
@@ -100,7 +184,7 @@ async function loadData() {
     if (loadingOverlay) loadingOverlay.style.display = 'flex';
 
     try {
-        const docRef = db.collection("crmData").doc("main");
+        const docRef = db.collection("crmData").doc(currentUserDoc);
         const docSnap = await docRef.get();
 
         if (docSnap.exists) {
@@ -130,7 +214,7 @@ async function loadData() {
     // ═══ REALTIME LISTENER — Sinxronizatsiya kaliti ═══
     // hasPendingWrites tekshiruvi — telefondan yoki kompyuterdan
     // o'zgarish bo'lganda to'g'ri ishlashini ta'minlaydi
-    db.collection("crmData").doc("main").onSnapshot((doc) => {
+    currentSnapshotUnsubscribe = db.collection("crmData").doc(currentUserDoc).onSnapshot((doc) => {
         // Faqat serverdan tasdiqlangan o'zgarishlarni qabul qilish
         // hasPendingWrites = true bo'lsa, bu bizning local yozuvimiz,
         // uni e'tiborsiz qoldiramiz chunki biz allaqachon local state'ni yangilaganmiz
@@ -157,7 +241,7 @@ async function saveStudentsToFirebase() {
     showSyncStatus('saving', 'Saqlanmoqda...');
 
     try {
-        await db.collection("crmData").doc("main").set({
+        await db.collection("crmData").doc(currentUserDoc).set({
             students: students,
             classes: classes,
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
@@ -978,5 +1062,114 @@ window.exportToTelegramText = () => {
     closeExportModal();
 };
 
+// ─── Admin Users Logic ───
+let adminUsersList = [];
+
+async function loadAdminUsers() {
+    const listEl = document.getElementById('teachersList');
+    if (!listEl) return;
+    listEl.innerHTML = `<p style="text-align: center; color: #94a3b8; padding: 2rem 0;">Yuklanmoqda...</p>`;
+
+    try {
+        const docRef = db.collection("crmSettings").doc("users");
+        const docSnap = await docRef.get();
+        
+        if (docSnap.exists) {
+            adminUsersList = docSnap.data().list || [];
+        } else {
+            adminUsersList = [];
+        }
+        
+        renderAdminUsers();
+    } catch (e) {
+        console.error("Foydalanuvchilarni yuklashda xato:", e);
+        listEl.innerHTML = `<p style="text-align: center; color: var(--danger); padding: 2rem 0;">Xatolik yuz berdi.</p>`;
+    }
+}
+
+function renderAdminUsers() {
+    const listEl = document.getElementById('teachersList');
+    if (!listEl) return;
+
+    if (adminUsersList.length === 0) {
+        listEl.innerHTML = `<p style="text-align: center; color: #94a3b8; padding: 2rem 0;">Hali o'qituvchilar yo'q.</p>`;
+        return;
+    }
+
+    listEl.innerHTML = adminUsersList.map((u, i) => `
+        <div class="student-card stagger-item" style="animation-delay: ${0.1 + (i * 0.05)}s;">
+            <div class="student-info">
+                <h3 style="color: var(--primary);">👤 Login: ${escapeHtml(u.login)}</h3>
+                <p>🔑 Parol: ${escapeHtml(u.password)}</p>
+            </div>
+            <div class="actions">
+                <button class="call-btn" style="background: var(--warning); box-shadow: 0 3px 0 #b45309;" onclick="viewAsTeacher('${u.login}')">👁 Kirish</button>
+                <button class="delete-btn" onclick="deleteTeacher('${u.login}')" title="O'chirish">🗑️</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+const addTeacherForm = document.getElementById('addTeacherForm');
+if (addTeacherForm) {
+    addTeacherForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const loginStr = document.getElementById('newTeacherLogin').value.trim().toLowerCase();
+        const passStr = document.getElementById('newTeacherPassword').value.trim();
+
+        if (loginStr === 'admin' || loginStr === 'main') {
+            alert("Bu logindan foydalanish mumkin emas!");
+            return;
+        }
+
+        if (adminUsersList.some(u => u.login === loginStr)) {
+            alert("Bunday login allaqachon mavjud!");
+            return;
+        }
+
+        const btn = addTeacherForm.querySelector('button');
+        const oldText = btn.innerText;
+        btn.innerText = "Qo'shilmoqda...";
+        btn.disabled = true;
+
+        adminUsersList.push({ login: loginStr, password: passStr });
+
+        try {
+            await db.collection("crmSettings").doc("users").set({
+                list: adminUsersList
+            });
+            addTeacherForm.reset();
+            renderAdminUsers();
+        } catch (e) {
+            console.error("Qo'shishda xato:", e);
+            alert("Xatolik! Qayta urinib ko'ring.");
+        } finally {
+            btn.innerText = oldText;
+            btn.disabled = false;
+        }
+    });
+}
+
+window.deleteTeacher = async (login) => {
+    if (confirm(`Rostdan ham "${login}" o'qituvchisini o'chirasizmi? (Diqqat: u endi tizimga kira olmaydi, lekin ma'lumotlari o'chib ketmaydi)`)) {
+        adminUsersList = adminUsersList.filter(u => u.login !== login);
+        try {
+            await db.collection("crmSettings").doc("users").set({
+                list: adminUsersList
+            });
+            renderAdminUsers();
+        } catch(e) {
+            console.error(e);
+            alert("O'chirishda xatolik");
+        }
+    }
+};
+
+window.viewAsTeacher = (login) => {
+    sessionStorage.setItem('smart_username', login);
+    sessionStorage.setItem('viewing_as_admin', 'true');
+    location.reload();
+};
+
 // ─── Start Application ───
-loadData();
+initializeApp();
