@@ -900,7 +900,7 @@ if (draftInput) {
             draftSuggest.style.display = 'block';
             draftSuggest.innerHTML = matches.map(m => `
                 <div class="px-3 py-2 border-bottom" style="cursor: pointer; font-size: 0.95rem; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'" onmousedown="markUrgent('${m.id}')">
-                    👤 <b class="text-dark">${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</b>
+                    <i class="fas fa-user text-muted me-1"></i> <b class="text-dark">${escapeHtml(m.firstName)} ${escapeHtml(m.lastName)}</b>
                     <span class="badge bg-secondary-subtle text-secondary ms-2 rounded-pill">${escapeHtml(m.classGroup || 'Asosiy')}</span>
                 </div>
             `).join('');
@@ -954,10 +954,10 @@ window.renderUrgentBadges = () => {
 window.openExportModal = () => {
     document.getElementById('exportModal').classList.add('active');
     const select = document.getElementById('exportClassFilter');
-    let html = `<option value="all">📁 Barcha sinflar</option>`;
+    let html = `<option value="all"><i class="fas fa-folder me-1"></i> Barcha sinflar</option>`;
     const uniqueClasses = [...classes].sort();
     uniqueClasses.forEach(c => {
-        html += `<option value="${escapeHtml(c)}">🏫 ${escapeHtml(c)}</option>`;
+        html += `<option value="${escapeHtml(c)}"><i class="fas fa-school me-1"></i> ${escapeHtml(c)}</option>`;
     });
     if (select) select.innerHTML = html;
 };
