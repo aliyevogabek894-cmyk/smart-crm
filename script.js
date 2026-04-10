@@ -436,25 +436,19 @@ function updateStats() {
     const todayCalls = targetStudents.filter(s => s.lastCall === todayStr).length;
     if (todayCallCountEl) todayCallCountEl.textContent = todayCalls;
 
-    let mostIgnored = null;
-    let maxDays = -1;
-
-    for (let s of targetStudents) {
-        if (s.lastCall === null) {
-            mostIgnored = s;
-            break;
+    let problematicCount = targetStudents.filter(s => {
+        let calls = 0;
+        if (s.callHistory && s.callHistory.length > 0) {
+            calls = s.callHistory.length;
+        } else {
+            calls = s.lastCall ? 1 : 0;
         }
-        const days = calculateDaysAgo(s.lastCall);
-        if (days !== null && days > maxDays) {
-            maxDays = days;
-            mostIgnored = s;
-        }
-    }
+        return calls >= 3;
+    }).length;
 
-    if (mostIgnoredStudentEl) {
-        mostIgnoredStudentEl.textContent = mostIgnored
-            ? `${mostIgnored.firstName} ${mostIgnored.lastName}`
-            : "Hammasi zo'r!";
+    const probEl = document.getElementById('problematicStudentsCount');
+    if (probEl) {
+        probEl.textContent = problematicCount + " ta";
     }
 }
 
