@@ -799,6 +799,7 @@ window.showMostCalledStudents = (clsName) => {
     } else {
         problemStudents.forEach((s, ix) => {
             const calls = getStudentCallCount(s);
+                let cleanPhone = s.phone.replace(/[^0-9+]/g, '');
             html += `
             <div class="history-item" style="flex-direction: column; align-items: flex-start; margin-bottom: 0.6rem; padding: 0.9rem; border-left: 4px solid var(--danger); background: #fffcfc; border-radius: 10px;">
                 <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
@@ -807,7 +808,10 @@ window.showMostCalledStudents = (clsName) => {
                         📞 ${calls} marta
                     </span>
                 </div>
-                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">📞 ${escapeHtml(s.phone)}</div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;">
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">📞 ${escapeHtml(s.phone)}</span>
+                    <a href="tel:${cleanPhone}" class="tel-link-btn" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">📲 Tel qilish</a>
+                </div>
                 <div style="color: #64748b; font-size: 0.82rem; margin-top: 0.3rem;"><i>Izoh:</i> ${escapeHtml(s.notes || "Yo'q")}</div>
             </div>`;
         });
