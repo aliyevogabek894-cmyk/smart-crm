@@ -1078,29 +1078,37 @@ window.exportToTelegramText = () => {
 
     let reportList = [];
     data.forEach(s => {
+        let lastCallReason = "-";
+        let lastParentFeedback = "-";
+        if (s.callHistory && s.callHistory.length > 0) {
+            let lastCallInfo = s.callHistory[s.callHistory.length - 1];
+            if (lastCallInfo.teacherReason) lastCallReason = lastCallInfo.teacherReason;
+            if (lastCallInfo.parentFeedback) lastParentFeedback = lastCallInfo.parentFeedback;
+        }
+
+        let feedbackText = (lastCallReason !== "-" || lastParentFeedback !== "-") 
+            ? `\n   📞 Maqsad: ${lastCallReason}\n   💬 Ota-ona fikri: ${lastParentFeedback}` 
+            : "";
+
         if (s.isUrgent) {
-            reportList.push(`🚨 ${s.firstName} ${s.lastName} - (${s.urgentReason || 'Muammo'})`);
+            reportList.push(`🚨 ${s.firstName} ${s.lastName} - (${s.urgentReason || 'Muammo'})${feedbackText}`);
         } else {
             const daysAgo = calculateDaysAgo(s.lastCall);
             if (s.lastCall === null) {
-                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (Hali qo'ng'iroq qilinmagan)`);
+                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (Tel qilinmagan)${feedbackText}`);
             } else if (daysAgo !== null && daysAgo >= 3) {
-                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (${daysAgo} kun o'tdi)`);
+                reportList.push(`🔴 ${s.firstName} ${s.lastName} - (${daysAgo} kun o'tdi)${feedbackText}`);
+            } else {
+                reportList.push(`✅ ${s.firstName} ${s.lastName} - (Gaplashilgan)${feedbackText}`);
             }
         }
     });
 
-    if (reportList.length === 0) {
-        alert("Hammasi a'lo! Muammoli o'quvchi yo'q.");
-        return;
-    }
-
     const filterText = document.getElementById('exportClassFilter').options[document.getElementById('exportClassFilter').selectedIndex].text;
     const todayStr = new Date().toLocaleDateString('uz-UZ');
 
-    let message = `📅 Kunlik Hisobot (${todayStr}, ${filterText})\n\n`;
-    message += `⚠️ Quyidagi o'quvchilar bo'yicha ogohlantirish:\n\n`;
-    message += reportList.map((item, i) => `${i + 1}. ${item}`).join('\n');
+    let message = `📅 Hisobot (${todayStr}, ${filterText})\n\n`;
+    message += reportList.map((item, i) => `${i + 1}. ${item}`).join('\n\n');
     message += `\n\n🤖 Ustoz Aliyev tizimi orqali`;
 
     const encodedMessage = encodeURIComponent(message);
