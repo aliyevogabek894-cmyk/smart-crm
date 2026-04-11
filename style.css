@@ -341,9 +341,9 @@ h1, h2, h3, h4, h5, h6, .display-font {
 }
 
 /* Teacher tags */
-.status-good { border-left: 5px solid #198754 !important; }
-.status-neutral { border-left: 5px solid #0d6efd !important; }
-.status-bad { border-left: 5px solid #dc3545 !important; }
+.status-good { border-left: 8px solid #10b981 !important; }
+.status-neutral { border-left: 8px solid #3b82f6 !important; }
+.status-bad { border-left: 8px solid #ef4444 !important; }
 
 /* Customizing Bootstrap Cards for premium feel */
 .card {

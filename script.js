@@ -348,16 +348,16 @@ function evaluateStudent(student) {
     let tags = [];
 
     if (student.lastCall === null) {
-        borderClass = 'border-danger border-2';
+        borderClass = 'status-bad border-danger border border-1';
         tags.push(`<span class="badge bg-danger rounded-pill"><i class="fas fa-exclamation-circle me-1"></i> TEL QILISH KERAK!</span>`);
     } else if (daysAgo === 0) {
-        borderClass = 'border-success border-2';
-        tags.push(`<span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> Bugun qa qayd etilgan</span>`);
+        borderClass = 'status-good border-success border border-1';
+        tags.push(`<span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> Bugun qayd etilgan</span>`);
     } else if (daysAgo >= 3) {
-        borderClass = 'border-danger border-2';
+        borderClass = 'status-bad border-danger border border-1';
         tags.push(`<span class="badge bg-danger rounded-pill"><i class="fas fa-clock me-1"></i> ${daysAgo} kun o'tdi!</span>`);
     } else {
-        borderClass = 'border-info border-2';
+        borderClass = 'status-neutral border-info border border-1';
         tags.push(`<span class="badge bg-info text-dark rounded-pill"><i class="fas fa-calendar-alt me-1"></i> ${daysAgo} kun oldin</span>`);
     }
 
