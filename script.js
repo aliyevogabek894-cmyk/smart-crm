@@ -444,7 +444,7 @@ function render() {
                         <h5 class="fw-bold mb-2 display-font">${escapeHtml(student.firstName)} ${escapeHtml(student.lastName)}</h5>
                         <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
                             <span class="text-muted small"><i class="fas fa-phone me-1"></i> ${escapeHtml(student.phone)}</span>
-                            <a href="tel:${cleanPhone}" class="btn btn-sm btn-success rounded-pill px-3 py-1 shadow-sm fw-bold border-0" style="font-size:0.8rem; line-height: 1.6;"><i class="fas fa-paper-plane me-1"></i> Tel qilish</a>
+                            <a href="tel:${cleanPhone}" class="btn btn-sm btn-success rounded-pill px-3 py-1 shadow-sm fw-bold border-0" style="font-size:0.8rem; line-height: 1.6;"><i class="fas fa-phone-alt me-1"></i> Tel qilish</a>
                         </div>
                         <p class="mb-2 text-dark small"><i class="fas fa-sticky-note me-1 text-muted"></i> ${escapeHtml(student.notes || "Izoh yo'q")}</p>
                         ${lastFeedbackHtml}
@@ -665,7 +665,7 @@ window.openHistoryModal = () => {
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <span class="text-muted small"><i class="fas fa-phone-alt me-1"></i> ${escapeHtml(s.phone)}</span>
-                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-paper-plane"></i> Tel</a>
+                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-phone-alt"></i> Tel</a>
                     </div>
                     <ul class="list-unstyled mb-0 small text-muted">
                         ${historyHtml}
@@ -867,7 +867,7 @@ window.showMostCalledStudents = (clsName) => {
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="text-muted small"><i class="fas fa-mobile-alt me-1"></i> ${escapeHtml(s.phone)}</span>
-                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-paper-plane"></i> Tel</a>
+                        <a href="tel:${cleanPhone}" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0" style="font-size: 0.75rem;"><i class="fas fa-phone-alt"></i> Tel</a>
                     </div>
                     <div class="text-muted small"><i><i class="fas fa-info-circle me-1"></i> Izoh:</i> ${escapeHtml(s.notes || "Yo'q")}</div>
                 </div>
