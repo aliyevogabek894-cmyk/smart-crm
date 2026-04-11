@@ -995,26 +995,21 @@ window.exportStyledReport = (type) => {
     <head>
         <meta charset="utf-8">
         <title>Hisobot</title>
-        <style>
-            table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }
-            th { background-color: #4338ca; color: #ffffff; padding: 12px; border: 1px solid #1e293b; text-align: center; font-weight: bold; }
-            td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; vertical-align: middle; }
-        </style>
     </head>
-    <body>
-        <h2 style="text-align: center; color: #4338ca; font-family: Arial, sans-serif;">Ustoz Aliyev - O'quvchi Hisoboti</h2>
-        <p style="text-align: center; color: #64748b; font-family: Arial, sans-serif;">Sana: <b>${dateStr}</b> | Sinf: <b>${filterText}</b></p>
-        <table>
-            <tr>
-                <th>T/r</th>
-                <th>Ism Familiya</th>
-                <th>Sinf</th>
-                <th>Ota-ona telefoni</th>
-                <th>Izoh / Muammo</th>
-                <th>Holati</th>
-                <th>Oxirgi aloqa</th>
-                <th>Qo'ng'iroq maqsadi</th>
-                <th>Ota-ona fikri</th>
+    <body style="font-family: Arial, sans-serif;">
+        <h2 style="text-align: center; color: #4338ca;">Ustoz Aliyev - O'quvchi Hisoboti</h2>
+        <p style="text-align: center; color: #333333;">Sana: <b>${dateStr}</b> | Sinf: <b>${filterText}</b></p>
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; text-align: center;">
+            <tr style="background-color: #4338ca; color: #ffffff; font-weight: bold;">
+                <th style="padding: 10px;">T/r</th>
+                <th style="padding: 10px;">Ism Familiya</th>
+                <th style="padding: 10px;">Sinf</th>
+                <th style="padding: 10px;">Ota-ona telefoni</th>
+                <th style="padding: 10px;">Izoh / Muammo</th>
+                <th style="padding: 10px;">Holati</th>
+                <th style="padding: 10px;">Oxirgi aloqa</th>
+                <th style="padding: 10px;">Qo'ng'iroq maqsadi</th>
+                <th style="padding: 10px;">Ota-ona fikri</th>
             </tr>`;
 
     data.forEach((s, idx) => {
@@ -1030,8 +1025,9 @@ window.exportStyledReport = (type) => {
             if (lastCallInfo.parentFeedback) lastParentFeedback = lastCallInfo.parentFeedback;
         }
         
-        let rowColor = s.isUrgent ? '#fef2f2' : (s.lastCall ? '#f0fdf4' : '#f8fafc');
-        let textColor = s.isUrgent ? '#dc2626' : (s.lastCall ? '#166534' : '#334155');
+        // Use safer colors for Excel visibility
+        let rowColor = s.isUrgent ? '#fce8e6' : (s.lastCall ? '#e6f4ea' : '#ffffff');
+        let textColor = s.isUrgent ? '#c5221f' : '#000000';
 
         htmlContent += `
             <tr style="background-color: ${rowColor}; color: ${textColor};">
