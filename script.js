@@ -386,7 +386,7 @@ function render() {
 
     let optionsHtml = `<option value="all"><i class="fas fa-folder me-1"></i> Barcha sinflar</option>`;
     uniqueClasses.forEach(cls => {
-        optionsHtml += `<option value="${escapeHtml(cls)}">🏫 ${escapeHtml(cls)} sinfi</option>`;
+        optionsHtml += `<option value="${escapeHtml(cls)}"><i class="fas fa-school me-1"></i> ${escapeHtml(cls)} sinfi</option>`;
     });
     if (mainClassFilter) {
         mainClassFilter.innerHTML = optionsHtml;
@@ -850,7 +850,7 @@ window.showMostCalledStudents = (clsName) => {
     problemStudents.sort((a, b) => getStudentCallCount(b) - getStudentCallCount(a));
     problemStudents = problemStudents.slice(0, 7);
 
-    let html = `<div style="margin-bottom: 0.8rem; color: var(--primary); font-weight: 700; font-size: 1.05rem; text-align: center;">🏫 ${escapeHtml(clsName)} sinfi (Top 7)</div>`;
+    let html = `<div style="margin-bottom: 0.8rem; color: var(--primary); font-weight: 700; font-size: 1.05rem; text-align: center;"><i class="fas fa-school me-1"></i> ${escapeHtml(clsName)} sinfi (Top 7)</div>`;
 
     if (problemStudents.length === 0) {
         html += `<p style="text-align:center; color:#94a3b8; padding: 1rem;">Bu sinfda 3+ marta qo'ng'iroq qilingan o'quvchilar yo'q.</p>`;
@@ -1043,7 +1043,6 @@ window.exportStyledReport = (type) => {
     const fileName = `Ustoz_Aliyev_Hisobot_${dateStr}.${fileExtension}`;
     const file = new File([blob], fileName, { type: blobType });
 
-    openTelegramAfterDownload();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -1052,6 +1051,11 @@ window.exportStyledReport = (type) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    if (type === 'word') {
+        openTelegramAfterDownload();
+    }
+    
     closeExportModal();
 };
 
