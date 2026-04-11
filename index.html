@@ -105,11 +105,11 @@
             <div class="row align-items-center glass-card p-3 p-md-4 rounded-4 mx-0">
                 
                 <!-- Left: Logo & Title -->
-                <div class="col-md-4 d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start mb-3 mb-md-0">
-                    <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="col-md-4 d-flex flex-row align-items-center justify-content-center justify-content-md-start gap-3 text-start mb-3 mb-md-0">
+                    <img src="favicon.png" alt="Ustoz Aliyev Logo" class="rounded-circle shadow-sm" style="width: 65px; height: 65px; object-fit: cover;">
                     <div>
-                        <h3 class="fw-bold text-primary mb-1">Ustoz Aliyev</h3>
-                        <p class="mb-0 text-muted" style="font-size: 0.85rem;">O'qituvchining aqlli yordamchisi</p>
+                        <h4 class="fw-bold text-primary mb-1 fs-5 fs-md-4">Ustoz Aliyev</h4>
+                        <p class="mb-0 text-muted" style="font-size: 0.75rem;">O'qituvchi yordamchisi</p>
                     </div>
                 </div>
 
@@ -148,22 +148,22 @@
         </header>
 
         <!-- Stats Panel -->
-        <section class="row g-3 mb-4 animate-in">
-            <div class="col-sm-6">
-                <div class="card pt-3 pb-3 px-4 d-flex flex-row align-items-center gap-3 h-100 border-0 shadow-sm stagger-1">
-                    <div class="fs-2 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-phone-alt"></i></div>
+        <section class="row g-2 g-md-3 mb-4 animate-in">
+            <div class="col-6 col-md-6">
+                <div class="card pt-3 pb-3 px-2 px-md-4 d-flex flex-column flex-md-row align-items-center text-center text-md-start gap-2 gap-md-3 h-100 border-0 shadow-sm stagger-1">
+                    <div class="fs-4 fs-md-2 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 50px; height: 50px;"><i class="fas fa-phone-alt"></i></div>
                     <div>
-                        <span class="text-uppercase text-muted fw-bold" style="font-size: 0.8rem;">Bugun qo'ng'iroqlar</span>
-                        <h2 id="todayCallCount" class="mb-0 fw-bold display-font">0</h2>
+                        <span class="text-uppercase text-muted fw-bold d-block mb-1 lh-sm" style="font-size: 0.7rem;">Bugun qo'ng'iroqlar</span>
+                        <h3 id="todayCallCount" class="mb-0 fw-bold display-font">0</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card pt-3 pb-3 px-4 d-flex flex-row align-items-center gap-3 h-100 border-0 shadow-sm bg-warning bg-opacity-10 stagger-2" style="cursor: pointer;" onclick="openMostCalledModal()">
-                    <div class="fs-2 bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="col-6 col-md-6">
+                <div class="card pt-3 pb-3 px-2 px-md-4 d-flex flex-column flex-md-row align-items-center text-center text-md-start gap-2 gap-md-3 h-100 border-0 shadow-sm bg-warning bg-opacity-10 stagger-2" style="cursor: pointer;" onclick="openMostCalledModal()">
+                    <div class="fs-4 fs-md-2 bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 50px; height: 50px;"><i class="fas fa-exclamation-triangle"></i></div>
                     <div>
-                        <span class="text-uppercase text-danger fw-bold" style="font-size: 0.8rem;">Muammoli (3+ tel)</span>
-                        <h2 id="problematicStudentsCount" class="mb-0 fw-bold display-font">0 ta</h2>
+                        <span class="text-uppercase text-danger fw-bold d-block mb-1 lh-sm" style="font-size: 0.7rem;">Muammoli (3+ tel)</span>
+                        <h3 id="problematicStudentsCount" class="mb-0 fw-bold display-font">0 ta</h3>
                     </div>
                 </div>
             </div>
@@ -364,7 +364,7 @@
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=43"></script>
+    <script src="script.js?v=44"></script>
 </body>
 
 </html>
