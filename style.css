@@ -341,9 +341,47 @@ h1, h2, h3, h4, h5, h6, .display-font {
 }
 
 /* Teacher tags */
-.status-good { border-left: 8px solid #10b981 !important; }
-.status-neutral { border-left: 8px solid #3b82f6 !important; }
-.status-bad { border-left: 8px solid #ef4444 !important; }
+.status-good { 
+    border-left: 8px solid #10b981 !important; 
+    border-right: 8px solid #10b981 !important; 
+}
+.status-neutral { 
+    border-left: 8px solid #3b82f6 !important; 
+    border-right: 8px solid #3b82f6 !important; 
+}
+.status-bad { 
+    border-left: 8px solid #ef4444 !important; 
+    border-right: 8px solid #ef4444 !important; 
+}
+
+/* Middle Separator */
+.status-good .card-body > div:first-child {
+    border-right: 4px dashed #10b981;
+    padding-right: 1.5rem;
+}
+.status-neutral .card-body > div:first-child {
+    border-right: 4px dashed #3b82f6;
+    padding-right: 1.5rem;
+}
+.status-bad .card-body > div:first-child {
+    border-right: 4px dashed #ef4444;
+    padding-right: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .status-good .card-body > div:first-child,
+    .status-neutral .card-body > div:first-child,
+    .status-bad .card-body > div:first-child {
+        border-right: none;
+        border-bottom: 4px dashed;
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .status-good .card-body > div:first-child { border-bottom-color: #10b981; }
+    .status-neutral .card-body > div:first-child { border-bottom-color: #3b82f6; }
+    .status-bad .card-body > div:first-child { border-bottom-color: #ef4444; }
+}
 
 /* Customizing Bootstrap Cards for premium feel */
 .card {
