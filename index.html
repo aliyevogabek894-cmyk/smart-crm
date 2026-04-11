@@ -125,12 +125,18 @@
                         </div>
                     </div>
 
-                    <!-- Action and System Buttons -->
-                    <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
                         <button class="btn btn-primary btn-sm px-3 fw-bold rounded-pill" onclick="openHistoryModal()"><i class="fas fa-history me-1"></i> Tarix</button>
                         <select id="mainClassFilter" class="form-select form-select-sm border-primary text-primary fw-bold rounded-pill" style="width: auto; min-width: 110px;" onchange="setClassFilter(this.value)">
                         </select>
                         <button class="btn btn-secondary btn-sm rounded-pill px-3" onclick="openClassManager()" title="Sinflarni sozlash"><i class="fas fa-chalkboard-teacher me-1"></i> Sinf sozlari</button>
+                    </div>
+
+                    <!-- System Buttons -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mt-2 mt-md-0">
                         <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold" onclick="toggleTheme()" id="themeToggleBtn" title="Tun/Kun rejimi"><i class="fas fa-moon me-1"></i> Tun</button>
                         <a href="https://t.me/alliyev_2225" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3" title="Administrator"><i class="fab fa-telegram me-1"></i> Adminga murojaat</a>
                         <button id="adminReturnBtn" class="btn btn-warning btn-sm fw-bold text-dark rounded-pill px-3" style="display: none;" onclick="returnToAdminPanel()"><i class="fas fa-arrow-left me-1"></i> Ortga qaytish</button>
