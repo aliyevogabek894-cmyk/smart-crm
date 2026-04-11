@@ -1013,11 +1013,22 @@ window.exportStyledReport = (type) => {
                 <th>Izoh / Muammo</th>
                 <th>Holati</th>
                 <th>Oxirgi aloqa</th>
+                <th>Qo'ng'iroq maqsadi</th>
+                <th>Ota-ona fikri</th>
             </tr>`;
 
     data.forEach((s, idx) => {
         let holatTekst = s.isUrgent ? 'TEZDA QO\'NG\'IROQ 🚨' : (s.lastCall ? 'Gaplashilgan ✅' : 'Tel qilinmagan ⏳');
         let oxirgiTel = s.lastCall ? formatDateUi(s.lastCall) : "QILINMAGAN";
+        
+        let lastCallReason = "-";
+        let lastParentFeedback = "-";
+        
+        if (s.callHistory && s.callHistory.length > 0) {
+            let lastCallInfo = s.callHistory[s.callHistory.length - 1];
+            if (lastCallInfo.teacherReason) lastCallReason = lastCallInfo.teacherReason;
+            if (lastCallInfo.parentFeedback) lastParentFeedback = lastCallInfo.parentFeedback;
+        }
         
         let rowColor = s.isUrgent ? '#fef2f2' : (s.lastCall ? '#f0fdf4' : '#f8fafc');
         let textColor = s.isUrgent ? '#dc2626' : (s.lastCall ? '#166534' : '#334155');
@@ -1031,6 +1042,8 @@ window.exportStyledReport = (type) => {
                 <td>${escapeHtml(s.isUrgent ? s.urgentReason : (s.notes || "-"))}</td>
                 <td>${holatTekst}</td>
                 <td>${oxirgiTel}</td>
+                <td>${escapeHtml(lastCallReason)}</td>
+                <td>${escapeHtml(lastParentFeedback)}</td>
             </tr>`;
     });
 
